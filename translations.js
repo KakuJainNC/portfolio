@@ -2,6 +2,7 @@
 const translations = {
     en: {
         // Navigation
+        'header.name': 'Kaku Jain',
         'nav.home': 'Home',
         'nav.about': 'About',
         'nav.portfolio': 'Portfolio',
@@ -137,6 +138,7 @@ const translations = {
         'form.submit': 'Send Message',
         
         // Footer
+        'footer.name': 'Kaku Jain',
         'footer.tagline': 'Crafting digital experiences that inspire and engage.',
         'footer.links.title': 'Quick Links',
         'footer.contact.title': 'Get In Touch',
@@ -156,6 +158,7 @@ const translations = {
     
     es: {
         // Navigation
+        'header.name': 'Kaku Jain',
         'nav.home': 'Inicio',
         'nav.about': 'Acerca de',
         'nav.portfolio': 'Portafolio',
@@ -291,6 +294,7 @@ const translations = {
         'form.submit': 'Enviar Mensaje',
         
         // Footer
+        'footer.name': 'Kaku Jain',
         'footer.tagline': 'Creando experiencias digitales que inspiran y cautivan.',
         'footer.links.title': 'Enlaces Rápidos',
         'footer.contact.title': 'Contáctame',
