@@ -1242,8 +1242,8 @@ section {
 
 @media (max-width: 768px) {
     .language-switcher {
-        order: -1;
-        margin-right: auto;
+        /* order: -1; */
+        /* margin-right: auto; */
     }
 
     .lang-btn .lang-text {
