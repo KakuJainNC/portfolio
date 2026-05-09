@@ -81,10 +81,10 @@ function runIntroAnimation() {
 
         // Desert background
         const dg = ctx.createLinearGradient(0, 0, w, h);
-        dg.addColorStop(0,   '#ddb46e');
-        dg.addColorStop(0.4, '#cc9050');
-        dg.addColorStop(0.8, '#b07240');
-        dg.addColorStop(1,   '#8c5a2e');
+        dg.addColorStop(0,   '#e8d070');
+        dg.addColorStop(0.4, '#d4b848');
+        dg.addColorStop(0.8, '#b09830');
+        dg.addColorStop(1,   '#8a7220');
         ctx.fillStyle = dg;
         ctx.fillRect(0, 0, w, h);
 
