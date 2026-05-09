@@ -5,7 +5,7 @@ const translations = {
         'header.name': 'Kaku Jain',
         'nav.home': 'Home',
         'nav.about': 'About',
-        'nav.portfolio': 'Portfolio',
+        'nav.portfolio': 'Sectors',
         'nav.contact': 'Contact',
         
         // Hero Section
@@ -43,7 +43,7 @@ const translations = {
         
         // Portfolio Section
         'portfolio.tag': 'My Work',
-        'portfolio.title': 'Featured Industries',
+        'portfolio.title': 'Featured Sectors',
         'portfolio.description': "Discover the diverse industries I've had the privilege to work with",
         'portfolio.filter.all': 'All Industries',
         'portfolio.filter.professional': 'Professional Services',
@@ -136,7 +136,7 @@ const translations = {
         'header.name': 'Kaku Jain',
         'nav.home': 'Inicio',
         'nav.about': 'Acerca de',
-        'nav.portfolio': 'Portafolio',
+        'nav.portfolio': 'Sectores',
         'nav.contact': 'Contacto',
         
         // Hero Section
@@ -174,7 +174,7 @@ const translations = {
         
         // Portfolio Section
         'portfolio.tag': 'Mi Trabajo',
-        'portfolio.title': 'Industrias Destacadas',
+        'portfolio.title': 'Sectores Destacados',
         'portfolio.description': 'Descubre las diversas industrias con las que he tenido el privilegio de trabajar',
         'portfolio.filter.all': 'Todas las Industrias',
         'portfolio.filter.professional': 'Servicios Profesionales',
