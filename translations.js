@@ -133,7 +133,7 @@ const translations = {
         'footer.links.title': 'Quick Links',
         'footer.contact.title': 'Get In Touch',
         'footer.copyright': '© 2026 Kaku Jain. All rights reserved.',
-        'footer.badge': 'Glide Certified Expert | Duplica',
+        'footer.badge': 'UX-Led Builder',
         
         // Skills
         'skill.uxstrategy': 'UX Strategy',
@@ -275,7 +275,7 @@ const translations = {
         'footer.links.title': 'Enlaces Rápidos',
         'footer.contact.title': 'Contáctame',
         'footer.copyright': '© 2026 Kaku Jain. Todos los derechos reservados.',
-        'footer.badge': 'Experto Certificado de Glide | Duplica',
+        'footer.badge': 'UX-Led Builder',
         
         // Skills
         'skill.uxstrategy': 'Estrategia UX',
