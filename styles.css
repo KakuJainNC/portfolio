@@ -159,10 +159,13 @@ ul {
 
 .demo-arrow {
     display: none;
-    color: #e53e3e;
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+    position: absolute;
+    top: -2rem;
+    left: 0;
+    color: #ffffff;
+    font-size: 1.25rem;
     animation: arrowBlink 0.5s ease-in-out infinite;
+    pointer-events: none;
 }
 
 .demo-arrow.visible {
@@ -1122,6 +1125,10 @@ section {
 }
 
 .footer-links h4,
+.footer-contact {
+    position: relative;
+}
+
 .footer-contact h4 {
     font-size: 1.125rem;
     margin-bottom: 1rem;
