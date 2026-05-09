@@ -43,7 +43,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Space Grotesk', sans-serif;
     line-height: 1.2;
     font-weight: 700;
 }
@@ -100,7 +100,7 @@ ul {
     font-size: 1.5rem;
     font-weight: 800;
     color: var(--primary-green);
-    font-family: 'Playfair Display', serif;
+    font-family: 'Space Grotesk', sans-serif;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -258,6 +258,7 @@ ul {
     margin-bottom: 1.5rem;
     color: #ffffff;
     line-height: 1.15;
+    text-transform: none;
 }
 
 .hero-title span {
