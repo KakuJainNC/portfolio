@@ -340,11 +340,6 @@ window.addEventListener('scroll', () => {
     lastScroll = currentScroll;
 });
 
-// About image — click to toggle green tint reveal
-document.querySelector('.about-img-wrapper').addEventListener('click', function () {
-    this.classList.toggle('revealed');
-});
-
 // Request Demo button — scroll to footer contact and show blinking arrow
 document.getElementById('requestDemoBtn').addEventListener('click', () => {
     const target = document.getElementById('footer-contact');

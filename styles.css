@@ -570,11 +570,11 @@ section {
     filter: brightness(0.6) contrast(0.9) grayscale(0.3);
 }
 
-.about-img-wrapper.revealed::before {
+.about-img-wrapper:hover::before {
     opacity: 0;
 }
 
-.about-img-wrapper.revealed img {
+.about-img-wrapper:hover img {
     transform: scale(1.05);
     filter: brightness(1) contrast(1) grayscale(0);
 }
@@ -592,7 +592,7 @@ section {
     transition: all 0.5s ease;
 }
 
-.about-img-wrapper.revealed .about-shape {
+.about-img-wrapper:hover .about-shape {
     opacity: 0.4;
     transform: scale(1.1);
 }
@@ -746,7 +746,8 @@ section {
 @media (max-width: 768px) {
     .portfolio-intro {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 1rem;
+        margin-bottom: 2rem;
     }
 }
 
