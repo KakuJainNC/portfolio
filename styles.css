@@ -733,20 +733,24 @@ section {
 
 .portfolio-list {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.75rem;
+}
+
+@media (max-width: 1024px) {
+    .portfolio-list {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 
 .portfolio-item {
     display: flex;
-    align-items: center;
-    gap: 1.25rem;
+    flex-direction: column;
     background: var(--white);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 20px var(--shadow);
-    padding: 1rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -756,10 +760,9 @@ section {
 }
 
 .portfolio-list-img {
-    flex: 0 0 42%;
-    border-radius: 8px;
-    overflow: hidden;
+    width: 100%;
     aspect-ratio: 4 / 3;
+    overflow: hidden;
 }
 
 .portfolio-list-img img {
@@ -775,22 +778,13 @@ section {
 }
 
 .portfolio-list-text {
-    flex: 1;
-    min-width: 0;
+    padding: 1rem;
 }
 
 .portfolio-list-text h3 {
-    font-size: 1.05rem;
+    font-size: 1rem;
     color: var(--text-dark);
-    margin-bottom: 0.4rem;
     line-height: 1.3;
-}
-
-.portfolio-list-text p {
-    color: var(--text-light);
-    font-size: 0.875rem;
-    line-height: 1.6;
-    margin-bottom: 0.75rem;
 }
 
 .project-tags {
@@ -1124,6 +1118,7 @@ section {
 .footer-tagline {
     margin-top: 0.75rem;
     font-style: italic;
+    text-align: center;
 }
 
 .footer-links h4,
