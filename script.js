@@ -1,6 +1,202 @@
-// ==================== 
+// ====================
+// Intro Animation
+// ====================
+
+function runIntroAnimation() {
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;';
+    document.body.insertBefore(canvas, document.body.firstChild);
+    document.body.style.overflow = 'hidden';
+
+    const ctx = canvas.getContext('2d');
+
+    function setSize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    setSize();
+
+    // Pre-generate grass blades (horizontal, pointing right into desert)
+    const blades = Array.from({ length: 55 }, () => ({
+        yRatio:    Math.random(),
+        length:    14 + Math.random() * 22,
+        lean:      (Math.random() - 0.5) * 10,
+        thickness: 2 + Math.random() * 3,
+        hue:       125 + Math.random() * 20,
+        lightness: 28 + Math.random() * 14
+    })).sort((a, b) => a.yRatio - b.yRatio);
+
+    // Desert crack lines (fixed positions)
+    const cracks = [
+        [0.14, 0.08, 0.19, 0.55, 0.11, 0.92],
+        [0.33, 0.04, 0.38, 0.58, 0.30, 0.94],
+        [0.52, 0.12, 0.57, 0.68, 0.50, 0.88],
+        [0.68, 0.06, 0.73, 0.52, 0.65, 0.91],
+        [0.82, 0.18, 0.87, 0.62, 0.79, 0.86],
+        [0.24, 0.30, 0.20, 0.72, 0.26, 0.95],
+        [0.45, 0.22, 0.49, 0.75, 0.43, 0.90],
+    ];
+
+    function waveAt(yNorm, xBase, amp) {
+        return xBase
+            + Math.sin(yNorm * 11.0 + 0.8) * amp * 0.50
+            + Math.sin(yNorm *  6.3 + 2.1) * amp * 0.33
+            + Math.sin(yNorm *  3.1 + 0.4) * amp * 0.17;
+    }
+
+    function ease(t) {
+        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    }
+
+    const T = {
+        sweepStart:  350,
+        sweepEnd:   2350,
+        nameStart:  1950,
+        nameEnd:    2700,
+        holdUntil:  3500,
+        fadeEnd:    4400
+    };
+
+    let start = null;
+
+    function frame(ts) {
+        if (!start) start = ts;
+        const elapsed = ts - start;
+        const w = canvas.width, h = canvas.height;
+
+        // Global fade-out
+        let globalAlpha = 1;
+        if (elapsed > T.holdUntil) {
+            globalAlpha = 1 - Math.min((elapsed - T.holdUntil) / (T.fadeEnd - T.holdUntil), 1);
+        }
+        if (globalAlpha <= 0) {
+            canvas.remove();
+            document.body.style.overflow = '';
+            return;
+        }
+
+        ctx.clearRect(0, 0, w, h);
+        ctx.globalAlpha = globalAlpha;
+
+        // Desert background
+        const dg = ctx.createLinearGradient(0, 0, w, h);
+        dg.addColorStop(0,   '#ddb46e');
+        dg.addColorStop(0.4, '#cc9050');
+        dg.addColorStop(0.8, '#b07240');
+        dg.addColorStop(1,   '#8c5a2e');
+        ctx.fillStyle = dg;
+        ctx.fillRect(0, 0, w, h);
+
+        // Crack lines
+        ctx.save();
+        ctx.strokeStyle = 'rgba(80, 44, 12, 0.13)';
+        ctx.lineWidth = 1;
+        cracks.forEach(([x1, y1, cx, cy, x2, y2]) => {
+            ctx.beginPath();
+            ctx.moveTo(x1 * w, y1 * h);
+            ctx.quadraticCurveTo(cx * w, cy * h, x2 * w, y2 * h);
+            ctx.stroke();
+        });
+        ctx.restore();
+
+        // Green sweep
+        const sweepRaw = Math.max(elapsed - T.sweepStart, 0) / (T.sweepEnd - T.sweepStart);
+        const sweepP   = ease(Math.min(sweepRaw, 1));
+        const greenEdge = sweepP * w;
+        const waveAmp   = Math.min(greenEdge * 0.022, 18);
+
+        if (greenEdge > 0) {
+            // Green fill with organic right edge
+            const gg = ctx.createLinearGradient(0, 0, w, h);
+            gg.addColorStop(0,   '#1e3622');
+            gg.addColorStop(0.5, '#2b4d30');
+            gg.addColorStop(1,   '#3a6640');
+            ctx.fillStyle = gg;
+
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(waveAt(0, greenEdge, waveAmp), 0);
+            for (let i = 0; i <= 120; i++) {
+                const yn = i / 120;
+                ctx.lineTo(waveAt(yn, greenEdge, waveAmp), yn * h);
+            }
+            ctx.lineTo(0, h);
+            ctx.closePath();
+            ctx.fill();
+
+            // Subtle lighter sheen on left
+            const sheen = ctx.createLinearGradient(0, 0, greenEdge, 0);
+            sheen.addColorStop(0,   'rgba(255,255,255,0.04)');
+            sheen.addColorStop(0.6, 'rgba(255,255,255,0)');
+            ctx.fillStyle = sheen;
+            ctx.fillRect(0, 0, greenEdge, h);
+
+            // Grass blades at leading edge (pointing right into desert)
+            blades.forEach(b => {
+                const by = b.yRatio * h;
+                const bx = waveAt(b.yRatio, greenEdge, waveAmp);
+                ctx.beginPath();
+                ctx.moveTo(bx, by);
+                ctx.quadraticCurveTo(
+                    bx + b.length * 0.55, by + b.lean * 0.4 - b.thickness,
+                    bx + b.length,        by + b.lean
+                );
+                ctx.quadraticCurveTo(
+                    bx + b.length * 0.55, by + b.lean * 0.4 + b.thickness,
+                    bx,                   by + b.thickness * 0.5
+                );
+                ctx.fillStyle = `hsl(${b.hue}, 48%, ${b.lightness}%)`;
+                ctx.fill();
+            });
+        }
+
+        // Name reveal
+        const nameRaw = Math.max(elapsed - T.nameStart, 0) / (T.nameEnd - T.nameStart);
+        const nameP   = ease(Math.min(nameRaw, 1));
+
+        if (nameP > 0) {
+            ctx.globalAlpha = globalAlpha * nameP;
+
+            const fontSize = Math.min(w * 0.088, 90);
+            const cx = w / 2;
+            const cy = h / 2 + (1 - nameP) * 18;
+
+            ctx.textAlign    = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Name
+            ctx.shadowColor = 'rgba(0,0,0,0.45)';
+            ctx.shadowBlur  = 28;
+            ctx.fillStyle   = '#ffffff';
+            ctx.font        = `bold ${fontSize}px Georgia, "Playfair Display", serif`;
+            ctx.fillText('Kaku Jain', cx, cy - fontSize * 0.05);
+
+            // Tagline
+            ctx.shadowBlur  = 0;
+            ctx.fillStyle   = '#b4e4c6';
+            ctx.font        = `${Math.min(w * 0.021, 19)}px Arial, sans-serif`;
+            ctx.fillText('B R I N G I N G  G R E E N E R Y  B A C K', cx, cy + fontSize * 0.75);
+
+            ctx.globalAlpha  = globalAlpha;
+            ctx.textAlign    = 'start';
+            ctx.shadowBlur   = 0;
+        }
+
+        requestAnimationFrame(frame);
+    }
+
+    requestAnimationFrame(frame);
+}
+
+// Run once per browser session
+if (!sessionStorage.getItem('introPlayed')) {
+    sessionStorage.setItem('introPlayed', '1');
+    runIntroAnimation();
+}
+
+// ====================
 // Language Switcher
-// ==================== 
+// ====================
 
 let currentLanguage = localStorage.getItem('language') || 'en';
 
