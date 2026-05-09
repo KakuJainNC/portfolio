@@ -549,10 +549,6 @@ section {
     transition: box-shadow 0.5s ease;
 }
 
-.about-img-wrapper:hover {
-    box-shadow: 0 25px 70px var(--shadow-hover);
-}
-
 .about-img-wrapper::before {
     content: '';
     position: absolute;
@@ -566,10 +562,6 @@ section {
     pointer-events: none;
 }
 
-.about-img-wrapper:hover::before {
-    opacity: 0;
-}
-
 .about-img-wrapper img {
     width: 100%;
     height: 100%;
@@ -578,10 +570,13 @@ section {
     filter: brightness(0.6) contrast(0.9) grayscale(0.3);
 }
 
-.about-img-wrapper:hover img {
+.about-img-wrapper.revealed::before {
+    opacity: 0;
+}
+
+.about-img-wrapper.revealed img {
     transform: scale(1.05);
     filter: brightness(1) contrast(1) grayscale(0);
-    box-shadow: 0 0 30px rgba(53, 94, 59, 0.4);
 }
 
 .about-shape {
@@ -597,7 +592,7 @@ section {
     transition: all 0.5s ease;
 }
 
-.about-img-wrapper:hover .about-shape {
+.about-img-wrapper.revealed .about-shape {
     opacity: 0.4;
     transform: scale(1.1);
 }
@@ -1307,7 +1302,7 @@ section {
     }
 
     .portfolio-list {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         gap: 1rem;
     }
 
@@ -1316,8 +1311,8 @@ section {
     }
 
     .portfolio-list-img {
-        flex: 0 0 45%;
-        width: 45%;
+        flex: 0 0 42%;
+        width: 42%;
         aspect-ratio: 4 / 3;
     }
 
@@ -1326,7 +1321,7 @@ section {
     }
 
     .portfolio-list-text h3 {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
 
     .testimonial-card {
