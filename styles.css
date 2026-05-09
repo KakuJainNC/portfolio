@@ -1024,16 +1024,24 @@ section {
     color: var(--primary-green);
 }
 
-.social-links h4 {
+.contact-social-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 2rem 0;
+}
+
+.contact-social-center h4 {
     font-size: 1.125rem;
     color: var(--text-dark);
-    margin-bottom: 1rem;
 }
 
 .social-icons {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .social-icon {
