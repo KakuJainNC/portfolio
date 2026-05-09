@@ -763,6 +763,12 @@ section {
     gap: 1.75rem;
 }
 
+.portfolio-list .portfolio-item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    max-width: 60%;
+    margin: 0 auto;
+}
+
 .portfolio-item {
     display: flex;
     align-items: center;
