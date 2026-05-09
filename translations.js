@@ -11,8 +11,8 @@ const translations = {
         
         // Hero Section
         'hero.badge': 'UX-Led Builder',
-        'hero.title1': 'A Decade Designing And Building Digital Products.',
-        'hero.title2': 'Now AI-Augmented.',
+        'hero.title1': 'A decade designing and building digital products.',
+        'hero.title2': 'Now AI-augmented.',
         'hero.title3': '',
         'hero.description': 'Ten years of UX, design, and shipping real products for international clients. Today, AI-augmented workflows let me build at a bigger scale — brand sites, web apps, landing pages, internal tools, full software products. UX-first, designing and building at the same desk.',
         'hero.cta1': 'View My Work',
@@ -166,11 +166,11 @@ const translations = {
         'nav.contact': 'Contacto',
         
         // Hero Section
-        'hero.badge': 'Constructor UX-First',
-        'hero.title1': 'Una Década Diseñando Y Construyendo Productos Digitales.',
-        'hero.title2': 'Ahora Potenciado Por IA.',
+        'hero.badge': 'Diseñador y Constructor UX',
+        'hero.title1': 'Una década diseñando y construyendo productos digitales.',
+        'hero.title2': 'Ahora con IA.',
         'hero.title3': '',
-        'hero.description': 'Diez años de UX, diseño y entrega de productos reales para clientes internacionales. Hoy, los flujos de trabajo potenciados por IA me permiten construir a mayor escala — sitios de marca, aplicaciones web, landing pages, herramientas internas, productos de software completos. UX primero, diseñando y construyendo en el mismo escritorio.',
+        'hero.description': 'Diez años de UX, diseño y entrega de productos reales para clientes internacionales. Hoy, los flujos de trabajo aumentados con IA me permiten construir a mayor escala — sitios de marca, aplicaciones web, landing pages, herramientas internas y productos de software completos. UX primero, diseñando y construyendo en el mismo escritorio.',
         'hero.cta1': 'Ver Mi Trabajo',
         'hero.cta2': 'Contáctame',
         'hero.stat1': 'Años de Experiencia',

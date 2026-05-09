@@ -715,5 +715,5 @@ document.addEventListener('DOMContentLoaded', () => {
 // Console Message
 // ==================== 
 
-console.log('%c👋 Welcome to Kaku Jain\'s Portfolio!', 'color: #355E3B; font-size: 20px; font-weight: bold;');
-console.log('%cLooking for a talented designer? Let\'s connect!', 'color: #4a7a52; font-size: 14px;');
+console.log('%c👋 Inspecting the code? You\'ll fit right in.', 'color: #355E3B; font-size: 20px; font-weight: bold;');
+console.log('%cA decade designing and building. Now AI-augmented. Reach out: kakujain.com/contact', 'color: #4a7a52; font-size: 14px;');
