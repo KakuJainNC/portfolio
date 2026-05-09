@@ -32,6 +32,13 @@ function initMatrixRain() {
     document.body.insertBefore(canvas, document.body.firstChild);
     document.body.insertBefore(veil, canvas.nextSibling);
 
+    // Hide all portfolio content until intro ends
+    Array.from(document.body.children).forEach(el => {
+        if (el.id !== 'matrix-bg' && el.id !== 'matrix-veil') {
+            el.style.opacity = '0';
+        }
+    });
+
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
 
@@ -131,6 +138,23 @@ function initMatrixRain() {
         veil.style.opacity      = '0.33';
         introDiv.style.opacity  = '0';
         setTimeout(() => introDiv.remove(), 450);
+
+        // Reveal portfolio content
+        Array.from(document.body.children).forEach(el => {
+            if (el.id !== 'matrix-bg' && el.id !== 'matrix-veil' && el !== introDiv) {
+                el.style.transition = 'opacity 0.8s ease';
+                el.style.opacity    = '1';
+            }
+        });
+        // Clean up inline styles after fade-in completes
+        setTimeout(() => {
+            Array.from(document.body.children).forEach(el => {
+                if (el.id !== 'matrix-bg' && el.id !== 'matrix-veil') {
+                    el.style.opacity    = '';
+                    el.style.transition = '';
+                }
+            });
+        }, 820);
     }
 
     function tick(ts) {
@@ -602,17 +626,7 @@ if (window.innerWidth > 768) {
     });
 }
 
-// ==================== 
-// Loading Animation
-// ==================== 
-
-window.addEventListener('load', () => {
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        document.body.style.transition = 'opacity 0.5s ease';
-        document.body.style.opacity = '1';
-    }, 100);
-});
+// (Loading animation removed — Matrix rain intro handles the reveal)
 
 // ==================== 
 // Parallax Effect on Hero
