@@ -713,6 +713,21 @@ section {
     width: 100%;
     border-radius: 12px;
     overflow: hidden;
+    position: relative;
+}
+
+.portfolio-intro-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(53, 94, 59, 0.45) 0%, rgba(53, 94, 59, 0.25) 100%);
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    border-radius: 12px;
+}
+
+.portfolio-intro-image:hover::after {
+    opacity: 0;
 }
 
 .portfolio-intro-image img {
@@ -720,6 +735,12 @@ section {
     height: 100%;
     object-fit: cover;
     display: block;
+    filter: brightness(0.85);
+    transition: filter 0.5s ease;
+}
+
+.portfolio-intro-image:hover img {
+    filter: brightness(1);
 }
 
 @media (max-width: 768px) {
