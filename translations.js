@@ -104,8 +104,9 @@ const translations = {
         'contact.info.subtitle': 'Feel free to reach out through any of these channels',
         'contact.location.title': 'Office Location',
         'contact.location.value': 'Gujarat, India\nServing USA & Mexico',
-        'contact.phone.title': 'Phone Number',
         'contact.email.title': 'Email Address',
+        'contact.email.india': 'From India:',
+        'contact.email.international': 'Outside India:',
         'contact.social.title': 'Follow Me',
         
         // Contact Form
@@ -238,8 +239,9 @@ const translations = {
         'contact.info.subtitle': 'No dudes en comunicarte a través de cualquiera de estos canales',
         'contact.location.title': 'Ubicación de Oficina',
         'contact.location.value': 'Gujarat, India\nAtendiendo EE.UU. y México',
-        'contact.phone.title': 'Número de Teléfono',
         'contact.email.title': 'Correo Electrónico',
+        'contact.email.india': 'Desde India:',
+        'contact.email.international': 'Fuera de India:',
         'contact.social.title': 'Sígueme',
         
         // Contact Form
