@@ -16,32 +16,33 @@ function runIntroAnimation() {
     }
     setSize();
 
-    // Pre-generate grass blades (horizontal, pointing right into desert)
+    // Pre-generate grass blades (vertical, pointing upward into desert)
     const blades = Array.from({ length: 55 }, () => ({
-        yRatio:    Math.random(),
+        xRatio:    Math.random(),
         length:    14 + Math.random() * 22,
         lean:      (Math.random() - 0.5) * 10,
         thickness: 2 + Math.random() * 3,
         hue:       125 + Math.random() * 20,
         lightness: 28 + Math.random() * 14
-    })).sort((a, b) => a.yRatio - b.yRatio);
+    })).sort((a, b) => a.xRatio - b.xRatio);
 
     // Desert crack lines (fixed positions)
     const cracks = [
-        [0.14, 0.08, 0.19, 0.55, 0.11, 0.92],
-        [0.33, 0.04, 0.38, 0.58, 0.30, 0.94],
-        [0.52, 0.12, 0.57, 0.68, 0.50, 0.88],
-        [0.68, 0.06, 0.73, 0.52, 0.65, 0.91],
-        [0.82, 0.18, 0.87, 0.62, 0.79, 0.86],
-        [0.24, 0.30, 0.20, 0.72, 0.26, 0.95],
-        [0.45, 0.22, 0.49, 0.75, 0.43, 0.90],
+        [0.08, 0.14, 0.55, 0.19, 0.92, 0.11],
+        [0.04, 0.33, 0.58, 0.38, 0.94, 0.30],
+        [0.12, 0.52, 0.68, 0.57, 0.88, 0.50],
+        [0.06, 0.68, 0.52, 0.73, 0.91, 0.65],
+        [0.18, 0.82, 0.62, 0.87, 0.86, 0.79],
+        [0.30, 0.24, 0.72, 0.20, 0.95, 0.26],
+        [0.22, 0.45, 0.75, 0.49, 0.90, 0.43],
     ];
 
-    function waveAt(yNorm, xBase, amp) {
-        return xBase
-            + Math.sin(yNorm * 11.0 + 0.8) * amp * 0.50
-            + Math.sin(yNorm *  6.3 + 2.1) * amp * 0.33
-            + Math.sin(yNorm *  3.1 + 0.4) * amp * 0.17;
+    // Wave along the horizontal advancing edge (varies by x, moves in y)
+    function waveAt(xNorm, yBase, amp) {
+        return yBase
+            - Math.sin(xNorm * 11.0 + 0.8) * amp * 0.50
+            - Math.sin(xNorm *  6.3 + 2.1) * amp * 0.33
+            - Math.sin(xNorm *  3.1 + 0.4) * amp * 0.17;
     }
 
     function ease(t) {
@@ -99,51 +100,51 @@ function runIntroAnimation() {
         });
         ctx.restore();
 
-        // Green sweep
-        const sweepRaw = Math.max(elapsed - T.sweepStart, 0) / (T.sweepEnd - T.sweepStart);
-        const sweepP   = ease(Math.min(sweepRaw, 1));
-        const greenEdge = sweepP * w;
-        const waveAmp   = Math.min(greenEdge * 0.022, 18);
+        // Green sweep (bottom to top)
+        const sweepRaw  = Math.max(elapsed - T.sweepStart, 0) / (T.sweepEnd - T.sweepStart);
+        const sweepP    = ease(Math.min(sweepRaw, 1));
+        const greenEdge = h - sweepP * h;          // starts at h (bottom), moves to 0 (top)
+        const waveAmp   = Math.min((h - greenEdge) * 0.022, 18);
 
-        if (greenEdge > 0) {
-            // Green fill with organic right edge
-            const gg = ctx.createLinearGradient(0, 0, w, h);
+        if (sweepP > 0) {
+            // Green fill: covers from the wave edge down to the bottom
+            const gg = ctx.createLinearGradient(0, greenEdge, 0, h);
             gg.addColorStop(0,   '#1e3622');
             gg.addColorStop(0.5, '#2b4d30');
             gg.addColorStop(1,   '#3a6640');
             ctx.fillStyle = gg;
 
             ctx.beginPath();
-            ctx.moveTo(0, 0);
-            ctx.lineTo(waveAt(0, greenEdge, waveAmp), 0);
-            for (let i = 0; i <= 120; i++) {
-                const yn = i / 120;
-                ctx.lineTo(waveAt(yn, greenEdge, waveAmp), yn * h);
+            ctx.moveTo(0, h);                                          // bottom-left
+            ctx.lineTo(w, h);                                          // bottom-right
+            // Wave edge from right to left
+            for (let i = 120; i >= 0; i--) {
+                const xn = i / 120;
+                ctx.lineTo(xn * w, waveAt(xn, greenEdge, waveAmp));
             }
-            ctx.lineTo(0, h);
             ctx.closePath();
             ctx.fill();
 
-            // Subtle lighter sheen on left
-            const sheen = ctx.createLinearGradient(0, 0, greenEdge, 0);
+            // Subtle sheen (bottom = lighter, fades up)
+            const sheen = ctx.createLinearGradient(0, h, 0, greenEdge);
             sheen.addColorStop(0,   'rgba(255,255,255,0.04)');
             sheen.addColorStop(0.6, 'rgba(255,255,255,0)');
             ctx.fillStyle = sheen;
-            ctx.fillRect(0, 0, greenEdge, h);
+            ctx.fillRect(0, greenEdge, w, h - greenEdge);
 
-            // Grass blades at leading edge (pointing right into desert)
+            // Grass blades at leading edge (pointing upward into desert)
             blades.forEach(b => {
-                const by = b.yRatio * h;
-                const bx = waveAt(b.yRatio, greenEdge, waveAmp);
+                const bx = b.xRatio * w;
+                const by = waveAt(b.xRatio, greenEdge, waveAmp);
                 ctx.beginPath();
                 ctx.moveTo(bx, by);
                 ctx.quadraticCurveTo(
-                    bx + b.length * 0.55, by + b.lean * 0.4 - b.thickness,
-                    bx + b.length,        by + b.lean
+                    bx + b.lean * 0.4 - b.thickness, by - b.length * 0.55,
+                    bx + b.lean,                      by - b.length
                 );
                 ctx.quadraticCurveTo(
-                    bx + b.length * 0.55, by + b.lean * 0.4 + b.thickness,
-                    bx,                   by + b.thickness * 0.5
+                    bx + b.lean * 0.4 + b.thickness, by - b.length * 0.55,
+                    bx + b.thickness * 0.5,           by
                 );
                 ctx.fillStyle = `hsl(${b.hue}, 48%, ${b.lightness}%)`;
                 ctx.fill();
