@@ -340,45 +340,14 @@ window.addEventListener('scroll', () => {
     lastScroll = currentScroll;
 });
 
-// Active navigation links on scroll
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-link');
+// Request Demo button — scroll to footer contact and show blinking arrow
+document.getElementById('requestDemoBtn').addEventListener('click', () => {
+    const target = document.getElementById('footer-contact');
+    target.scrollIntoView({ behavior: 'smooth' });
 
-window.addEventListener('scroll', () => {
-    let current = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        
-        if (pageYOffset >= sectionTop - 200) {
-            current = section.getAttribute('id');
-        }
-    });
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
-});
-
-// Mobile menu toggle
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('nav-menu');
-
-hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-    hamburger.classList.toggle('active');
-});
-
-// Close mobile menu when clicking on a link
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-        hamburger.classList.remove('active');
-    });
+    const arrow = document.getElementById('demoArrow');
+    arrow.classList.add('visible');
+    setTimeout(() => arrow.classList.remove('visible'), 2000);
 });
 
 const portfolioItems = document.querySelectorAll('.portfolio-item');

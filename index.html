@@ -65,11 +65,6 @@
                 <img src="kaku-jain.png" class="logo-avatar" alt="Kaku Jain">
                 <span class="logo-text" data-translate="header.name">Kaku Jain</span>
             </a>
-            <ul class="nav-menu" id="nav-menu">
-                <li><a href="#home" class="nav-link active" data-translate="nav.home">Home</a></li>
-                <li><a href="#about" class="nav-link" data-translate="nav.about">About</a></li>
-                <li><a href="#portfolio" class="nav-link" data-translate="nav.portfolio">Sectors</a></li>
-            </ul>
             <div class="language-switcher">
                 <button class="lang-btn active" data-lang="en" id="langEn">
                     <span class="lang-text">EN</span>
@@ -77,11 +72,6 @@
                 <button class="lang-btn" data-lang="es" id="langEs">
                     <span class="lang-text">ES</span>
                 </button>
-            </div>
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
             </div>
         </div>
     </nav>
@@ -102,10 +92,10 @@
                     Ten years of UX, design, and shipping real products for international clients. Today, AI-augmented workflows let me build at a bigger scale — brand sites, web apps, landing pages, internal tools, full software products. UX-first, designing and building at the same desk.
                 </p>
                 <div class="hero-cta fade-in-up delay-2">
-                    <a href="#portfolio" class="btn btn-primary">
-                        <span data-translate="hero.cta1">Browse Sectors</span>
+                    <button class="btn btn-primary" id="requestDemoBtn">
+                        <span data-translate="hero.cta.demo">Request Demo</span>
                         <i class="fas fa-arrow-right"></i>
-                    </a>
+                    </button>
                 </div>
             </div>
             <div class="hero-image fade-in-right">
@@ -254,7 +244,8 @@
                         <li><a href="#portfolio" data-translate="nav.portfolio">Sectors</a></li>
                     </ul>
                 </div>
-                <div class="footer-contact">
+                <div class="footer-contact" id="footer-contact">
+                    <div class="demo-arrow" id="demoArrow"><i class="fas fa-arrow-down"></i></div>
                     <h4 data-translate="footer.contact.title">Get In Touch</h4>
                     <p><i class="fas fa-envelope"></i> <a href="mailto:karthikeya@kjchq.in">karthikeya@kjchq.in</a> (India)</p>
                     <p><i class="fas fa-envelope"></i> <a href="mailto:kaku@duplica.co">kaku@duplica.co</a> (Outside India)</p>
