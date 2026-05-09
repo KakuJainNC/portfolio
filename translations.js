@@ -10,11 +10,11 @@ const translations = {
         'nav.contact': 'Contact',
         
         // Hero Section
-        'hero.badge': 'UI/UX Expert',
-        'hero.title1': 'Crafting AI-Powered Digital',
-        'hero.title2': 'Experiences',
-        'hero.title3': 'That Inspire',
-        'hero.description': 'Hi, I am Kaku Jain, a passionate design professional with a decade of experience specializing in web and app design. I work for Duplica and am based in Gujarat, India, with most of my projects spanning the USA and Mexico.',
+        'hero.badge': 'UX-Led Builder',
+        'hero.title1': 'A Decade Designing And Building Digital Products.',
+        'hero.title2': 'Now AI-Augmented.',
+        'hero.title3': '',
+        'hero.description': 'Ten years of UX, design, and shipping real products for international clients. Today, AI-augmented workflows let me build at a bigger scale — brand sites, web apps, landing pages, internal tools, full software products. UX-first, designing and building at the same desk.',
         'hero.cta1': 'View My Work',
         'hero.cta2': 'Get In Touch',
         'hero.stat1': 'Years Experience',
@@ -166,11 +166,11 @@ const translations = {
         'nav.contact': 'Contacto',
         
         // Hero Section
-        'hero.badge': 'Experto UI/UX',
-        'hero.title1': 'Creando Experiencias Digitales Potenciadas por IA',
-        'hero.title2': 'Digitales',
-        'hero.title3': 'Que Inspiran',
-        'hero.description': 'Hola, soy Kaku Jain, un profesional del diseño apasionado con una década de experiencia especializada en diseño web y de aplicaciones. Trabajo para Duplica y tengo mi base en Gujarat, India, con la mayoría de mis proyectos en Estados Unidos y México.',
+        'hero.badge': 'Constructor UX-First',
+        'hero.title1': 'Una Década Diseñando Y Construyendo Productos Digitales.',
+        'hero.title2': 'Ahora Potenciado Por IA.',
+        'hero.title3': '',
+        'hero.description': 'Diez años de UX, diseño y entrega de productos reales para clientes internacionales. Hoy, los flujos de trabajo potenciados por IA me permiten construir a mayor escala — sitios de marca, aplicaciones web, landing pages, herramientas internas, productos de software completos. UX primero, diseñando y construyendo en el mismo escritorio.',
         'hero.cta1': 'Ver Mi Trabajo',
         'hero.cta2': 'Contáctame',
         'hero.stat1': 'Años de Experiencia',

@@ -254,9 +254,18 @@ ul {
 }
 
 .hero-title {
-    font-size: 3.5rem;
+    font-size: 3.2rem;
     margin-bottom: 1.5rem;
     color: #ffffff;
+    line-height: 1.15;
+}
+
+.hero-title span {
+    display: block;
+}
+
+.hero-title .gradient-text {
+    margin-top: 0.15em;
 }
 
 .gradient-text {
