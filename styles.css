@@ -30,11 +30,15 @@ html {
     scroll-padding-top: 80px;
 }
 
+html {
+    background-color: #050e08;
+}
+
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     line-height: 1.6;
     color: var(--text-dark);
-    background-color: var(--off-white);
+    background-color: transparent;
     overflow-x: hidden;
 }
 
@@ -192,20 +196,13 @@ ul {
     display: flex;
     align-items: center;
     padding: 120px 0 60px;
-    background: linear-gradient(135deg, var(--off-white) 0%, #ffffff 100%);
+    background: transparent;
     position: relative;
     overflow: hidden;
 }
 
 .hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(53, 94, 59, 0.03) 0%, rgba(53, 94, 59, 0.08) 100%);
-    clip-path: polygon(30% 0, 100% 0, 100% 100%, 0 100%);
+    display: none;
 }
 
 .hero-container {
@@ -233,7 +230,7 @@ ul {
 .hero-title {
     font-size: 3.5rem;
     margin-bottom: 1.5rem;
-    color: var(--text-dark);
+    color: #ffffff;
 }
 
 .gradient-text {
@@ -245,7 +242,7 @@ ul {
 
 .hero-description {
     font-size: 1.125rem;
-    color: var(--text-light);
+    color: rgba(255,255,255,0.72);
     margin-bottom: 2rem;
     line-height: 1.8;
 }
@@ -291,6 +288,16 @@ ul {
     color: var(--white);
 }
 
+.hero .btn-secondary {
+    color: var(--light-green);
+    border-color: var(--light-green);
+}
+
+.hero .btn-secondary:hover {
+    background: var(--light-green);
+    color: var(--white);
+}
+
 .hero-stats {
     display: flex;
     gap: 3rem;
@@ -305,6 +312,10 @@ ul {
 .stat-item p {
     color: var(--text-light);
     font-size: 0.9rem;
+}
+
+.hero .stat-item p {
+    color: rgba(255,255,255,0.62);
 }
 
 .hero-image {
@@ -379,7 +390,7 @@ ul {
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    color: var(--text-light);
+    color: rgba(255,255,255,0.55);
     font-size: 0.85rem;
     font-weight: 500;
 }

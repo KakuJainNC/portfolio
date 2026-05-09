@@ -1,411 +1,197 @@
 // ====================
-// Reverse Desertification Intro
+// Matrix Rain Background
 // ====================
 
-function runDesertAnimation() {
-    if (sessionStorage.getItem('introPlayed')) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        sessionStorage.setItem('introPlayed', '1');
-        return;
-    }
-    sessionStorage.setItem('introPlayed', '1');
+function initMatrixRain() {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // ── DOM setup ──────────────────────────────────────────────
+    const CHARS = '0123456789/|\\<>{}[];:.,!?=+-*#@$%^&~';
+    const FADE  = 0.055;
+    const BG    = 'rgba(5,14,8,';
 
-    const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;';
+    // ── DOM setup ──────────────────────────────────────────────────
 
     const canvas = document.createElement('canvas');
-    canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;display:block;';
-
-    const skipBtn = document.createElement('button');
-    skipBtn.innerHTML = 'Skip Intro <i class="fas fa-arrow-right" style="font-size:11px"></i>';
-    skipBtn.style.cssText = [
-        'position:absolute;top:20px;right:20px',
-        'min-width:44px;min-height:44px',
-        'padding:8px 16px',
-        'background:rgba(255,255,255,0.18)',
-        'backdrop-filter:blur(4px)',
-        'border:2px solid rgba(255,255,255,0.25)',
-        'border-radius:50px',
-        'color:rgba(255,255,255,0.78)',
-        "font-family:'Inter',sans-serif",
-        'font-size:13px;font-weight:500',
-        'cursor:pointer',
-        'opacity:0.88',
-        'transition:opacity 0.15s ease',
-        'z-index:2',
-    ].join(';');
-    skipBtn.setAttribute('tabindex', '0');
-    skipBtn.setAttribute('aria-label', 'Skip intro animation');
-    skipBtn.addEventListener('mouseover', () => { skipBtn.style.opacity = '1'; });
-    skipBtn.addEventListener('mouseout',  () => { skipBtn.style.opacity = '0.88'; });
-
-    const controlBar = document.createElement('div');
-    controlBar.style.cssText = [
-        'position:absolute;bottom:0;left:0;right:0',
-        'display:flex;align-items:center;gap:12px',
-        'padding:14px 20px 20px',
-        'background:linear-gradient(transparent,rgba(0,0,0,0.40))',
-        'z-index:2',
+    canvas.id = 'matrix-bg';
+    canvas.style.cssText = [
+        'position:fixed;top:0;left:0;width:100%;height:100%',
+        'z-index:-1;opacity:0.28',
+        'pointer-events:none;display:block',
     ].join(';');
 
-    const playBtn = document.createElement('button');
-    playBtn.setAttribute('aria-label', 'Play or pause animation');
-    playBtn.style.cssText = [
-        'width:36px;height:36px;min-width:36px',
-        'border-radius:50%;border:none',
-        'background:rgba(53,94,59,0.88)',
-        'color:#fff;font-size:13px',
-        'cursor:pointer;flex-shrink:0',
-        'display:flex;align-items:center;justify-content:center',
+    const veil = document.createElement('div');
+    veil.id = 'matrix-veil';
+    veil.style.cssText = [
+        'position:fixed;top:0;left:0;width:100%;height:100%',
+        'z-index:-1;opacity:0.30',
+        'background:#030905',
+        'pointer-events:none',
+        'transition:opacity 0.8s ease',
     ].join(';');
 
-    const slider = document.createElement('input');
-    slider.type = 'range';
-    slider.min  = '0';
-    slider.max  = '1000';
-    slider.value = '0';
-    slider.setAttribute('aria-label', 'Scrub animation progress');
-    slider.style.cssText = 'flex:1;cursor:pointer;accent-color:#4a7a52;height:4px;';
-
-    controlBar.appendChild(playBtn);
-    controlBar.appendChild(slider);
-    overlay.appendChild(canvas);
-    overlay.appendChild(skipBtn);
-    overlay.appendChild(controlBar);
-    document.body.insertBefore(overlay, document.body.firstChild);
-    document.body.style.overflow = 'hidden';
+    document.body.insertBefore(canvas, document.body.firstChild);
+    document.body.insertBefore(veil, canvas.nextSibling);
 
     const ctx = canvas.getContext('2d');
-    const TOTAL_MS = 6500;
-    const HOLD_MS  = 900;
+    const dpr = window.devicePixelRatio || 1;
+
+    // ── Column state ───────────────────────────────────────────────
+
+    let FS, cols, heads, speeds, colChars;
 
     function resize() {
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const W = window.innerWidth, H = window.innerHeight;
+        FS = W < 600 ? 14 : 16;
+        canvas.width  = W * dpr;
+        canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        cols     = Math.floor(W / FS) + 1;
+        heads    = new Float32Array(cols);
+        speeds   = new Float32Array(cols);
+        colChars = [];
+        for (let c = 0; c < cols; c++) {
+            heads[c]    = -Math.random() * H;
+            speeds[c]   = FS * (20 + Math.random() * 22);
+            colChars[c] = CHARS[Math.floor(Math.random() * CHARS.length)];
+        }
+        ctx.fillStyle = BG + '1)';
+        ctx.fillRect(0, 0, W, H);
     }
     resize();
     window.addEventListener('resize', resize, { passive: true });
 
-    // ── Pre-generate scene data ────────────────────────────────
+    // ── Static draw for reduced-motion ────────────────────────────
 
-    // Organic frontier noise: multi-frequency sine field (fixed random phases)
-    const ph = Array.from({ length: 4 }, () => Math.random() * Math.PI * 2);
-
-    function frontierY(xf, sweepP) {
-        const n = Math.sin(xf * Math.PI * 4  + ph[0]) * 0.50
-                + Math.sin(xf * Math.PI * 7  + ph[1]) * 0.30
-                + Math.sin(xf * Math.PI * 13 + ph[2]) * 0.15
-                + Math.sin(xf * Math.PI * 2  + ph[3]) * 0.45;
-        // n ≈ -1.4 .. 1.4; normalize roughly to -1..1
-        const nNorm = n / 1.4;
-        // Variation narrows as sweep completes, creates tendril-race-ahead effect
-        const varScale = 0.13 * (1 - Math.pow(sweepP, 0.55) * 0.82);
-        return Math.max(0, Math.min(1, (1 - sweepP) + nNorm * varScale));
-    }
-
-    // Grass blades at the frontier
-    const blades = Array.from({ length: 65 }, () => ({
-        x:     Math.random(),
-        len:   12 + Math.random() * 22,
-        lean:  (Math.random() - 0.5) * 14,
-        thick: 1.5 + Math.random() * 2.5,
-        hue:   118 + Math.random() * 28,
-        lig:   24  + Math.random() * 16,
-    }));
-
-    // Ground texture tiles
-    const tiles = [];
-    for (let gy = 0; gy < 9; gy++) {
-        for (let gx = 0; gx < 13; gx++) {
-            const j = 0.009;
-            const bx = gx / 13, by = gy / 9;
-            tiles.push({
-                pts: [
-                    [bx + (Math.random()-0.5)*j, by + (Math.random()-0.5)*j],
-                    [bx+1/13+(Math.random()-0.5)*j, by + (Math.random()-0.5)*j],
-                    [bx+1/13+(Math.random()-0.5)*j, by+1/9+(Math.random()-0.5)*j],
-                    [bx + (Math.random()-0.5)*j, by+1/9+(Math.random()-0.5)*j],
-                ],
-                shade: 0.04 + Math.random() * 0.07,
-            });
-        }
-    }
-
-    // Crack network (quadratic bezier segments: x1,y1, cx,cy, x2,y2 — normalized)
-    const cracks = [
-        [0.05,0.10, 0.24,0.13, 0.43,0.16],
-        [0.39,0.08, 0.59,0.11, 0.78,0.14],
-        [0.74,0.07, 0.87,0.09, 0.97,0.08],
-        [0.08,0.28, 0.31,0.32, 0.55,0.35],
-        [0.51,0.26, 0.72,0.30, 0.94,0.28],
-        [0.03,0.47, 0.28,0.51, 0.51,0.54],
-        [0.47,0.44, 0.69,0.49, 0.90,0.46],
-        [0.12,0.66, 0.40,0.70, 0.63,0.73],
-        [0.59,0.63, 0.78,0.68, 0.96,0.65],
-        [0.18,0.83, 0.48,0.87, 0.71,0.90],
-        [0.66,0.80, 0.84,0.85, 0.96,0.82],
-        [0.22,0.14, 0.21,0.31, 0.20,0.48],
-        [0.61,0.12, 0.62,0.29, 0.63,0.45],
-        [0.84,0.10, 0.83,0.27, 0.84,0.44],
-        [0.35,0.35, 0.34,0.50, 0.33,0.67],
-        [0.73,0.32, 0.74,0.48, 0.75,0.65],
-        [0.48,0.54, 0.47,0.68, 0.46,0.83],
-        [0.86,0.47, 0.87,0.63, 0.88,0.81],
-    ];
-
-    // Pollen / seed particles
-    const pollen = Array.from({ length: 88 }, () => ({
-        x:       Math.random(),
-        y0:      0.35 + Math.random() * 0.55,
-        drift:   (Math.random() - 0.5) * 0.009,
-        rise:    0.28 + Math.random() * 0.55,
-        r:       1.5  + Math.random() * 2.5,
-        spawnAt: 0.63 + Math.random() * 0.18,
-        hue:     72   + Math.random() * 38,
-        alpha:   0.35 + Math.random() * 0.50,
-    }));
-
-    // Phase boundaries (overall progress 0..1)
-    const PH = {
-        sweepStart:  0.14,
-        sweepEnd:    0.53,
-        healStart:   0.50,
-        healEnd:     0.70,
-        pollenStart: 0.62,
-        nameStart:   0.86,
-    };
-
-    // ── Render ─────────────────────────────────────────────────
-
-    function draw(p) {
-        const w = canvas.width, h = canvas.height;
-        ctx.clearRect(0, 0, w, h);
-
-        // Desert background
-        const dg = ctx.createLinearGradient(0, 0, 0, h);
-        dg.addColorStop(0,    '#e8b87a');
-        dg.addColorStop(0.45, '#d4935a');
-        dg.addColorStop(0.85, '#c07038');
-        dg.addColorStop(1,    '#a05828');
-        ctx.fillStyle = dg;
-        ctx.fillRect(0, 0, w, h);
-
-        // Subtle tile texture
-        tiles.forEach(t => {
-            ctx.beginPath();
-            ctx.moveTo(t.pts[0][0]*w, t.pts[0][1]*h);
-            for (let i = 1; i < 4; i++) ctx.lineTo(t.pts[i][0]*w, t.pts[i][1]*h);
-            ctx.closePath();
-            ctx.fillStyle = `rgba(155,72,22,${t.shade})`;
-            ctx.fill();
-        });
-
-        // Cracks (fade out during heal phase)
-        const crackAlpha = p < PH.healStart ? 0.52
-            : p < PH.healEnd ? 0.52 * (1 - (p - PH.healStart) / (PH.healEnd - PH.healStart))
-            : 0;
-        if (crackAlpha > 0.01) {
-            ctx.save();
-            ctx.strokeStyle = `rgba(75,25,6,${crackAlpha})`;
-            ctx.lineWidth = 1.5;
-            cracks.forEach(([x1,y1,cx,cy,x2,y2]) => {
-                ctx.beginPath();
-                ctx.moveTo(x1*w, y1*h);
-                ctx.quadraticCurveTo(cx*w, cy*h, x2*w, y2*h);
-                ctx.stroke();
-            });
-            ctx.restore();
-        }
-
-        // Green fill with organic flow-field frontier
-        if (p > PH.sweepStart) {
-            const sp = Math.min((p - PH.sweepStart) / (PH.sweepEnd - PH.sweepStart), 1);
-            const N  = 180;
-
-            const gg = ctx.createLinearGradient(0, 0, 0, h);
-            gg.addColorStop(0,    '#1a3020');
-            gg.addColorStop(0.35, '#2b4d30');
-            gg.addColorStop(0.70, '#355E3B');
-            gg.addColorStop(1,    '#4a7a52');
-            ctx.fillStyle = gg;
-
-            ctx.beginPath();
-            ctx.moveTo(0, h);
-            ctx.lineTo(w, h);
-            for (let i = N; i >= 0; i--) {
-                const xf = i / N;
-                ctx.lineTo(xf * w, frontierY(xf, sp) * h);
-            }
-            ctx.closePath();
-            ctx.fill();
-
-            // Frontier edge highlight
-            ctx.beginPath();
-            for (let i = 0; i <= N; i++) {
-                const xf = i / N;
-                const y  = frontierY(xf, sp) * h;
-                i === 0 ? ctx.moveTo(0, y) : ctx.lineTo(xf * w, y);
-            }
-            ctx.strokeStyle = 'rgba(120,210,140,0.32)';
-            ctx.lineWidth = 2.5;
-            ctx.stroke();
-
-            // Grass blades at frontier
-            if (sp > 0.03 && sp < 0.97) {
-                blades.forEach(b => {
-                    const bx = b.x * w;
-                    const by = frontierY(b.x, sp) * h;
-                    ctx.beginPath();
-                    ctx.moveTo(bx, by);
-                    ctx.quadraticCurveTo(bx + b.lean*0.4 - b.thick, by - b.len*0.55, bx + b.lean, by - b.len);
-                    ctx.quadraticCurveTo(bx + b.lean*0.4 + b.thick, by - b.len*0.55, bx + b.thick*0.5, by);
-                    ctx.fillStyle = `hsl(${b.hue},44%,${b.lig}%)`;
-                    ctx.fill();
-                });
-            }
-        }
-
-        // Crack healing patches (small green blobs bloom along each crack)
-        if (p > PH.healStart && p < PH.healEnd + 0.05) {
-            const hp = Math.min((p - PH.healStart) / (PH.healEnd - PH.healStart), 1);
-            cracks.forEach(([x1,y1,cx,cy,x2,y2], ci) => {
-                const cp = Math.min(Math.max(hp * 1.6 - ci * 0.055, 0), 1);
-                if (cp < 0.01) return;
-                for (let s = 0; s < 7; s++) {
-                    const t  = s / 6;
-                    const px = (x1*(1-t)*(1-t) + cx*2*t*(1-t) + x2*t*t) * w;
-                    const py = (y1*(1-t)*(1-t) + cy*2*t*(1-t) + y2*t*t) * h;
-                    ctx.beginPath();
-                    ctx.arc(px, py, 4 + cp * 7, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(53,94,59,${cp * 0.36})`;
-                    ctx.fill();
+    if (prefersReduced) {
+        const W = window.innerWidth, H = window.innerHeight;
+        ctx.font = `${FS}px monospace`;
+        for (let c = 0; c < cols; c++) {
+            for (let row = 0; row < Math.floor(H / FS); row++) {
+                if (Math.random() > 0.82) {
+                    ctx.fillStyle = `rgba(53,94,59,${0.10 + Math.random() * 0.25})`;
+                    ctx.fillText(CHARS[Math.floor(Math.random() * CHARS.length)], c * FS, row * FS);
                 }
-            });
+            }
         }
-
-        // Pollen drift
-        if (p > PH.pollenStart) {
-            pollen.forEach(pl => {
-                const lp = Math.max(0, (p - pl.spawnAt) / (0.93 - pl.spawnAt));
-                if (lp <= 0 || lp >= 1) return;
-                const px = (pl.x + pl.drift * lp * 40) * w;
-                const py = (pl.y0 - lp * pl.rise * 0.36) * h;
-                const a  = pl.alpha * Math.sin(lp * Math.PI);
-                ctx.beginPath();
-                ctx.arc(px, py, pl.r, 0, Math.PI * 2);
-                ctx.fillStyle = `hsla(${pl.hue},55%,72%,${a})`;
-                ctx.fill();
-                const gr = ctx.createRadialGradient(px, py, 0, px, py, pl.r * 3);
-                gr.addColorStop(0, `hsla(${pl.hue},65%,80%,${a * 0.22})`);
-                gr.addColorStop(1, 'transparent');
-                ctx.beginPath();
-                ctx.arc(px, py, pl.r * 3, 0, Math.PI * 2);
-                ctx.fillStyle = gr;
-                ctx.fill();
-            });
-        }
-
-        // Name reveal
-        if (p > PH.nameStart) {
-            const np = Math.min((p - PH.nameStart) / 0.10, 1);
-            const en = np < 0.5 ? 2*np*np : -1 + (4 - 2*np)*np;
-            ctx.save();
-            ctx.globalAlpha = en;
-            const fs = Math.min(w * 0.088, 90);
-            const cx = w / 2, cy = h / 2 + (1 - en) * 18;
-            ctx.textAlign    = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.shadowColor  = 'rgba(0,0,0,0.45)';
-            ctx.shadowBlur   = 28;
-            ctx.fillStyle    = '#ffffff';
-            ctx.font         = `bold ${fs}px Georgia,"Playfair Display",serif`;
-            ctx.fillText('Kaku Jain', cx, cy - fs * 0.05);
-            ctx.shadowBlur   = 0;
-            ctx.fillStyle    = '#b4e4c6';
-            ctx.font         = `${Math.min(w * 0.021, 19)}px Arial,sans-serif`;
-            ctx.fillText('B R I N G I N G  G R E E N E R Y  B A C K', cx, cy + fs * 0.75);
-            ctx.restore();
-        }
+        canvas.style.opacity = '0.07';
+        veil.style.opacity   = '0.33';
+        return;
     }
 
-    // ── Playback ───────────────────────────────────────────────
+    // ── Intro overlay ──────────────────────────────────────────────
 
-    let prog = 0, playing = true, lastTs = null, rafId = null, holdTimer = null, removing = false;
+    const introDiv = document.createElement('div');
+    introDiv.style.cssText = [
+        'position:fixed;top:0;left:0;width:100%;height:100%',
+        'z-index:10000',
+        'display:flex;flex-direction:column;align-items:center;justify-content:center',
+        'pointer-events:none',
+        'opacity:0;transition:opacity 0.4s ease',
+    ].join(';');
+    introDiv.innerHTML =
+        '<div style="text-align:center;padding:0 1rem">' +
+        '<div style="font-family:\'Playfair Display\',Georgia,serif;' +
+            'font-size:clamp(2.5rem,8vw,90px);font-weight:700;color:#ffffff;' +
+            'text-shadow:0 0 40px rgba(53,94,59,0.9),0 4px 24px rgba(0,0,0,0.7);">' +
+            'Kaku Jain' +
+        '</div>' +
+        '<div style="font-family:\'Inter\',Arial,sans-serif;' +
+            'font-size:clamp(0.7rem,1.8vw,1.05rem);' +
+            'color:rgba(180,228,198,0.88);' +
+            'letter-spacing:0.35em;margin-top:1.4rem;' +
+            'text-shadow:0 0 18px rgba(53,94,59,0.7);">' +
+            'WELCOME TO THE FUTURE' +
+        '</div>' +
+        '</div>';
+    document.body.appendChild(introDiv);
 
-    function setPlayIcon() {
-        playBtn.innerHTML = playing
-            ? '<i class="fas fa-pause"></i>'
-            : '<i class="fas fa-play"></i>';
-    }
-    setPlayIcon();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        introDiv.style.opacity = '1';
+    }));
 
-    function removeOverlay() {
-        if (removing) return;
-        removing = true;
-        if (rafId)     { cancelAnimationFrame(rafId); rafId = null; }
-        if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
-        document.body.style.overflow = '';
-        window.removeEventListener('resize', resize);
-        overlay.style.transition = 'opacity 0.25s ease';
-        overlay.style.opacity    = '0';
-        setTimeout(() => overlay.remove(), 280);
+    // ── Animation loop ─────────────────────────────────────────────
+
+    const INTRO_MS   = 3000;
+    const TRANS_MS   = 800;
+    const SPEED_FULL = 1.0;
+    const SPEED_BG   = 0.3;
+
+    let prevTs     = null;
+    let startTs    = null;
+    let rafId      = null;
+    let speedMult  = SPEED_FULL;
+    let phase      = 'intro';
+    let transStart = 0;
+
+    function beginTransition(ts) {
+        phase = 'transition';
+        transStart = ts;
+        canvas.style.transition = 'opacity 0.8s ease';
+        canvas.style.opacity    = '0.07';
+        veil.style.opacity      = '0.33';
+        introDiv.style.opacity  = '0';
+        setTimeout(() => introDiv.remove(), 450);
     }
 
     function tick(ts) {
-        if (removing) return;
-        if (playing) {
-            if (lastTs !== null) {
-                prog = Math.min(prog + (ts - lastTs) / TOTAL_MS, 1);
-                if (prog >= 1) {
-                    prog    = 1;
-                    playing = false;
-                    setPlayIcon();
-                    holdTimer = setTimeout(removeOverlay, HOLD_MS);
-                }
-            }
-            lastTs = ts;
-        } else {
-            lastTs = null;
+        if (startTs === null) startTs = ts;
+        const elapsed = ts - startTs;
+        const dt      = prevTs === null ? 0 : Math.min((ts - prevTs) / 1000, 0.05);
+        prevTs = ts;
+
+        if (phase === 'intro' && elapsed >= INTRO_MS) {
+            beginTransition(ts);
         }
-        slider.value = String(Math.round(prog * 1000));
-        draw(prog);
+        if (phase === 'transition') {
+            const tp = Math.min((ts - transStart) / TRANS_MS, 1);
+            speedMult = SPEED_FULL + (SPEED_BG - SPEED_FULL) * tp;
+            if (tp >= 1) phase = 'bg';
+        }
+
+        const W = window.innerWidth, H = window.innerHeight;
+
+        ctx.fillStyle = BG + FADE + ')';
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.font = `${FS}px monospace`;
+        for (let c = 0; c < cols; c++) {
+            heads[c] += speeds[c] * speedMult * dt;
+
+            if (Math.random() < 0.015) {
+                colChars[c] = CHARS[Math.floor(Math.random() * CHARS.length)];
+            }
+
+            const x = c * FS;
+            const y = heads[c];
+
+            if (y > -FS && y < H + FS) {
+                ctx.fillStyle = 'rgba(220,255,222,0.92)';
+                ctx.fillText(colChars[c], x, y);
+            }
+
+            if (heads[c] > H + FS * 2) {
+                heads[c]    = -(FS * (2 + Math.random() * 15));
+                speeds[c]   = FS * (20 + Math.random() * 22);
+                colChars[c] = CHARS[Math.floor(Math.random() * CHARS.length)];
+            }
+        }
+
         rafId = requestAnimationFrame(tick);
     }
 
     rafId = requestAnimationFrame(tick);
 
-    // Scrub slider
-    slider.addEventListener('input', () => {
-        prog    = parseInt(slider.value, 10) / 1000;
-        playing = false;
-        lastTs  = null;
-        if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
-        setPlayIcon();
-        draw(prog);
-    });
-
-    // Play / pause
-    playBtn.addEventListener('click', () => {
-        if (prog >= 1) prog = 0;
-        playing = !playing;
-        if (playing && holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
-        setPlayIcon();
-    });
-
-    // Skip intro
-    function doSkip(e) {
-        if (e) e.preventDefault();
-        removeOverlay();
-    }
-    skipBtn.addEventListener('click', doSkip);
-    skipBtn.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') doSkip(e);
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+            prevTs = null;
+        } else if (!rafId) {
+            rafId = requestAnimationFrame(tick);
+        }
     });
 }
 
-runDesertAnimation();
+initMatrixRain();
 
 // ====================
 // Language Switcher
