@@ -33,7 +33,7 @@ const translations = {
         // About Section
         'about.tag': 'Get To Know Me',
         'about.title': 'About Me',
-        'about.subtitle': 'UX-led builder',
+        'about.subtitle': 'UX-Led Builder',
         'about.p1': 'A decade of design work for clients across different continents — UX research, interface design, and shipping real products end-to-end. In India, I work for KJC Management, and internationally I work for Duplica as part of a multi-lingual team serving international markets.',
         'about.p2': 'Today, I do more than design — I build. AI-augmented workflows let me deliver brand sites, web apps, landing pages, and full software products without the traditional design-to-engineering handoff. UX comes first, build follows immediately, all from the same desk in Gujarat, India.',
         'about.basedin.title': 'Based in',
