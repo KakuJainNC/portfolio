@@ -31,15 +31,15 @@ const translations = {
         // About Section
         'about.tag': 'Get To Know Me',
         'about.title': 'About Me',
-        'about.subtitle': 'Design Professional & Glide Certified Expert',
-        'about.p1': "With a decade of experience in the design industry, I work for Duplica, where I've had the privilege of collaborating with diverse clients across the USA and Mexico, creating impactful digital experiences that drive results.",
-        'about.p2': 'Based in Gujarat, India, I primarily serve clients in the USA and Mexico. As a Glide Certified Expert, I not only create stunning designs but also share my knowledge and expertise with aspiring designers and businesses.',
-        'about.location.title': 'Location',
-        'about.location.value': 'Gujarat, India | USA & Mexico',
-        'about.experience.title': 'Experience',
-        'about.experience.value': '10+ Years in Design',
-        'about.certification.title': 'Certification',
-        'about.certification.value': 'Glide Certified Expert',
+        'about.subtitle': 'Designer, Builder, UX Strategist',
+        'about.p1': 'A decade of design work for clients across the US, Mexico, and India — UX research, interface design, and shipping real products end-to-end. I work for Duplica as part of a multilingual team serving international markets.',
+        'about.p2': 'Today, I do more than design — I build. AI-augmented workflows let me deliver brand sites, web apps, landing pages, and full software products without the traditional design-to-engineering handoff. UX comes first, build follows immediately, all from the same desk in Gujarat, India.',
+        'about.basedin.title': 'Based in',
+        'about.basedin.value': 'Gujarat, India',
+        'about.reach.title': 'Working with',
+        'about.reach.value': 'US, Mexico & India',
+        'about.languages.title': 'Localized for',
+        'about.languages.value': 'English, Spanish, Hindi, Marathi',
         'about.skills.title': 'Core Expertise',
         
         // Portfolio Section
@@ -146,14 +146,10 @@ const translations = {
         'footer.badge': 'Glide Certified Expert | Duplica',
         
         // Skills
-        'skill.web': 'Web Design',
-        'skill.app': 'App Design',
-        'skill.uiux': 'UI/UX Design',
-        'skill.adobe': 'Adobe Creative Suite',
-        'skill.figma': 'Figma',
-        'skill.proto': 'Prototyping',
-        'skill.systems': 'Design Systems',
-        'skill.brand': 'Brand Identity',
+        'skill.uxstrategy': 'UX Strategy',
+        'skill.productdesign': 'Product Design',
+        'skill.aiengineering': 'AI-Augmented Engineering',
+        'skill.designsystems': 'Design Systems',
     },
     
     es: {
@@ -187,15 +183,15 @@ const translations = {
         // About Section
         'about.tag': 'Conóceme',
         'about.title': 'Acerca de Mí',
-        'about.subtitle': 'Profesional del Diseño y Experto Certificado de Glide',
-        'about.p1': 'Con una década de experiencia en la industria del diseño, trabajo para Duplica, donde he tenido el privilegio de colaborar con diversos clientes en Estados Unidos y México, creando experiencias digitales impactantes que generan resultados.',
-        'about.p2': 'Con base en Gujarat, India, atiendo principalmente a clientes en Estados Unidos y México. Como Experto Certificado de Glide, no solo creo diseños impresionantes sino que también comparto mi conocimiento y experiencia con diseñadores y empresas aspirantes.',
-        'about.location.title': 'Ubicación',
-        'about.location.value': 'Gujarat, India | EE.UU. y México',
-        'about.experience.title': 'Experiencia',
-        'about.experience.value': '10+ Años en Diseño',
-        'about.certification.title': 'Certificación',
-        'about.certification.value': 'Experto Certificado de Glide',
+        'about.subtitle': 'Diseñador, Constructor, Estratega UX',
+        'about.p1': 'Una década de trabajo de diseño para clientes en EE.UU., México e India — investigación UX, diseño de interfaces y entrega de productos reales de extremo a extremo. Trabajo para Duplica como parte de un equipo multilingüe que sirve mercados internacionales.',
+        'about.p2': 'Hoy, hago más que diseñar — construyo. Los flujos de trabajo aumentados con IA me permiten entregar sitios de marca, aplicaciones web, landing pages y productos de software completos sin la tradicional transferencia entre diseño e ingeniería. UX primero, construcción inmediata, todo desde el mismo escritorio en Gujarat, India.',
+        'about.basedin.title': 'Ubicado en',
+        'about.basedin.value': 'Gujarat, India',
+        'about.reach.title': 'Trabajando con',
+        'about.reach.value': 'EE.UU., México e India',
+        'about.languages.title': 'Localizado en',
+        'about.languages.value': 'Inglés, Español, Hindi, Marathi',
         'about.skills.title': 'Experiencia Principal',
         
         // Portfolio Section
@@ -302,13 +298,9 @@ const translations = {
         'footer.badge': 'Experto Certificado de Glide | Duplica',
         
         // Skills
-        'skill.web': 'Diseño Web',
-        'skill.app': 'Diseño de Apps',
-        'skill.uiux': 'Diseño UI/UX',
-        'skill.adobe': 'Adobe Creative Suite',
-        'skill.figma': 'Figma',
-        'skill.proto': 'Prototipado',
-        'skill.systems': 'Sistemas de Diseño',
-        'skill.brand': 'Identidad de Marca',
+        'skill.uxstrategy': 'Estrategia UX',
+        'skill.productdesign': 'Diseño de Producto',
+        'skill.aiengineering': 'Ingeniería Aumentada con IA',
+        'skill.designsystems': 'Sistemas de Diseño',
     }
 };
