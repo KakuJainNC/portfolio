@@ -101,12 +101,12 @@ function initMatrixRain() {
     ].join(';');
     introDiv.innerHTML =
         '<div style="text-align:center;padding:0 1rem">' +
-        '<div style="font-family:\'Playfair Display\',Georgia,serif;' +
+        '<div style="font-family:\'Satoshi\',sans-serif;' +
             'font-size:clamp(2.5rem,8vw,90px);font-weight:700;color:#ffffff;' +
             'text-shadow:0 0 40px rgba(53,94,59,0.9),0 4px 24px rgba(0,0,0,0.7);">' +
             'Kaku Jain' +
         '</div>' +
-        '<div style="font-family:\'Inter\',Arial,sans-serif;' +
+        '<div style="font-family:\'Satoshi\',sans-serif;' +
             'font-size:clamp(0.7rem,1.8vw,1.05rem);' +
             'color:rgba(180,228,198,0.88);' +
             'letter-spacing:0.35em;margin-top:1.4rem;' +
