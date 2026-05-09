@@ -1168,11 +1168,11 @@ section {
     color: var(--text-lighter);
 }
 
-.footer-links h4,
 .footer-contact {
     position: relative;
 }
 
+.footer-links h4,
 .footer-contact h4 {
     font-size: 1.125rem;
     margin-bottom: 1rem;
