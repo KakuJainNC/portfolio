@@ -9,110 +9,52 @@ function runIntroAnimation() {
     document.body.style.overflow = 'hidden';
 
     const ctx = canvas.getContext('2d');
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
 
-    // ── Deterministic pseudo-random (no flicker) ──────────────────────────
-    let _seed = 137;
-    function rng() {
-        _seed = (_seed * 1664525 + 1013904223) & 0x7fffffff;
-        return _seed / 0x7fffffff;
+    function setSize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
+    setSize();
 
-    // ── Cracked-earth crack network ───────────────────────────────────────
-    // Main vertical cracks [x0,y0, cx,cy, x1,y1, width]
-    const mainCracks = [
-        [0.07, 0.00,  0.05, 0.40,  0.08, 1.00,  2.2],
-        [0.20, 0.00,  0.22, 0.38,  0.18, 1.00,  2.0],
-        [0.34, 0.00,  0.32, 0.42,  0.35, 1.00,  1.8],
-        [0.48, 0.00,  0.50, 0.45,  0.47, 1.00,  2.1],
-        [0.63, 0.00,  0.61, 0.38,  0.64, 1.00,  1.9],
-        [0.78, 0.00,  0.80, 0.42,  0.77, 1.00,  2.0],
-        [0.91, 0.00,  0.93, 0.35,  0.90, 1.00,  1.7],
-    ];
-    // Cross / branch cracks [x0,y0, cx,cy, x1,y1, width]
-    const branchCracks = [
-        [0.07,0.18,  0.13,0.19,  0.20,0.18,  1.2],
-        [0.07,0.52,  0.13,0.54,  0.20,0.52,  1.0],
-        [0.07,0.80,  0.13,0.78,  0.20,0.80,  0.9],
-        [0.20,0.12,  0.27,0.13,  0.34,0.12,  1.1],
-        [0.20,0.38,  0.27,0.40,  0.34,0.38,  1.3],
-        [0.20,0.68,  0.27,0.66,  0.34,0.68,  1.0],
-        [0.34,0.22,  0.41,0.23,  0.48,0.22,  1.2],
-        [0.34,0.55,  0.41,0.57,  0.48,0.55,  1.1],
-        [0.34,0.82,  0.41,0.80,  0.48,0.82,  0.9],
-        [0.48,0.15,  0.55,0.16,  0.63,0.15,  1.0],
-        [0.48,0.44,  0.55,0.46,  0.63,0.44,  1.2],
-        [0.48,0.74,  0.55,0.72,  0.63,0.74,  1.0],
-        [0.63,0.28,  0.70,0.29,  0.78,0.28,  1.1],
-        [0.63,0.58,  0.70,0.60,  0.78,0.58,  1.3],
-        [0.63,0.88,  0.70,0.86,  0.78,0.88,  0.9],
-        [0.78,0.18,  0.84,0.19,  0.91,0.18,  1.0],
-        [0.78,0.52,  0.84,0.54,  0.91,0.52,  1.2],
-        [0.78,0.78,  0.84,0.76,  0.91,0.78,  1.0],
-        // short stubs
-        [0.07,0.32,  0.11,0.34,  0.15,0.33,  0.8],
-        [0.20,0.55,  0.24,0.56,  0.28,0.55,  0.7],
-        [0.34,0.70,  0.30,0.72,  0.26,0.71,  0.7],
-        [0.48,0.30,  0.52,0.31,  0.56,0.30,  0.8],
-        [0.63,0.72,  0.67,0.70,  0.71,0.71,  0.7],
-        [0.78,0.40,  0.82,0.41,  0.86,0.40,  0.8],
+    // Pre-generate grass blades (horizontal, pointing right into desert)
+    const blades = Array.from({ length: 55 }, () => ({
+        yRatio:    Math.random(),
+        length:    14 + Math.random() * 22,
+        lean:      (Math.random() - 0.5) * 10,
+        thickness: 2 + Math.random() * 3,
+        hue:       125 + Math.random() * 20,
+        lightness: 28 + Math.random() * 14
+    })).sort((a, b) => a.yRatio - b.yRatio);
+
+    // Desert crack lines (fixed positions)
+    const cracks = [
+        [0.14, 0.08, 0.19, 0.55, 0.11, 0.92],
+        [0.33, 0.04, 0.38, 0.58, 0.30, 0.94],
+        [0.52, 0.12, 0.57, 0.68, 0.50, 0.88],
+        [0.68, 0.06, 0.73, 0.52, 0.65, 0.91],
+        [0.82, 0.18, 0.87, 0.62, 0.79, 0.86],
+        [0.24, 0.30, 0.20, 0.72, 0.26, 0.95],
+        [0.45, 0.22, 0.49, 0.75, 0.43, 0.90],
     ];
 
-    // ── Background jungle trees ───────────────────────────────────────────
-    const bgTrees = Array.from({length: 14}, (_, i) => ({
-        xRatio:   0.02 + rng() * 0.88,
-        trunkH:   0.25 + rng() * 0.25,   // fraction of screen height
-        trunkW:   5    + rng() * 7,
-        canopyR:  35   + rng() * 55,
-        layers:   2    + Math.round(rng()),
-        hue:      120  + rng() * 18,
-        li:       14   + rng() * 8
-    }));
-
-    // ── Vegetation fringe profile (canopy lumps extending into drought zone)
-    // Each entry: [yRatio, xOffset beyond green edge]
-    // Lumps = tree canopies, valleys = gaps between trees
-    const fringeProfile = [
-        [0.00,  4],
-        [0.03, 38], [0.06, 78], [0.09, 98], [0.12, 88], [0.15, 60],  // canopy 1
-        [0.17, 28], [0.19, 22],                                         // gap
-        [0.21, 42], [0.24, 80], [0.27, 100],[0.31, 90], [0.34, 62],   // canopy 2
-        [0.36, 26], [0.38, 20],                                         // gap
-        [0.40, 50], [0.43, 88], [0.47, 108],[0.50, 95], [0.53, 65],   // canopy 3 (largest)
-        [0.55, 30], [0.57, 24],                                         // gap
-        [0.59, 45], [0.62, 82], [0.66, 97], [0.69, 85], [0.72, 55],   // canopy 4
-        [0.74, 28], [0.76, 22],                                         // gap
-        [0.78, 40], [0.81, 75], [0.85, 92], [0.88, 80], [0.91, 52],   // canopy 5
-        [0.93, 28], [0.96, 14], [0.99,  5], [1.00,  4],
-    ];
-
-    // ── Grass blades (point right into drought zone) ──────────────────────
-    const blades = Array.from({length: 75}, () => ({
-        yr:   rng(),
-        len:  10 + rng() * 22,
-        lean: (rng() - 0.5) * 14,
-        th:   1.5 + rng() * 2.5,
-        hue:  118 + rng() * 28,
-        li:   26  + rng() * 18
-    })).sort((a, b) => a.yr - b.yr);
-
-    // ── Helpers ───────────────────────────────────────────────────────────
-    function waveAt(yn, xBase, amp) {
+    function waveAt(yNorm, xBase, amp) {
         return xBase
-            + Math.sin(yn * 11.0 + 0.8) * amp * 0.50
-            + Math.sin(yn *  6.3 + 2.1) * amp * 0.33
-            + Math.sin(yn *  3.1 + 0.4) * amp * 0.17;
+            + Math.sin(yNorm * 11.0 + 0.8) * amp * 0.50
+            + Math.sin(yNorm *  6.3 + 2.1) * amp * 0.33
+            + Math.sin(yNorm *  3.1 + 0.4) * amp * 0.17;
     }
-    function ease(t) { return t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t; }
+
+    function ease(t) {
+        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    }
 
     const T = {
         sweepStart:  350,
-        sweepEnd:   2700,
-        nameStart:  2200,
-        nameEnd:    3000,
-        holdUntil:  3900,
-        fadeEnd:    4900
+        sweepEnd:   2350,
+        nameStart:  1950,
+        nameEnd:    2700,
+        holdUntil:  3500,
+        fadeEnd:    4400
     };
 
     let start = null;
@@ -123,194 +65,121 @@ function runIntroAnimation() {
         const w = canvas.width, h = canvas.height;
 
         // Global fade-out
-        let ga = 1;
-        if (elapsed > T.holdUntil)
-            ga = 1 - Math.min((elapsed - T.holdUntil) / (T.fadeEnd - T.holdUntil), 1);
-        if (ga <= 0) { canvas.remove(); document.body.style.overflow = ''; return; }
-
-        ctx.clearRect(0, 0, w, h);
-        ctx.globalAlpha = ga;
-
-        // ── 1. Cracked drought earth (full background) ────────────────────
-        const eg = ctx.createLinearGradient(0, 0, 0, h);
-        eg.addColorStop(0,    '#4a3420');
-        eg.addColorStop(0.35, '#3c2818');
-        eg.addColorStop(0.75, '#2e1e10');
-        eg.addColorStop(1,    '#1e1208');
-        ctx.fillStyle = eg;
-        ctx.fillRect(0, 0, w, h);
-
-        // Subtle polygon cell tint between cracks (raised earth pieces)
-        const cellTint = ctx.createRadialGradient(w*0.5, h*0.5, 0, w*0.5, h*0.5, w*0.6);
-        cellTint.addColorStop(0,   'rgba(90, 60, 30, 0.12)');
-        cellTint.addColorStop(1,   'rgba(30, 15, 5,  0.0)');
-        ctx.fillStyle = cellTint;
-        ctx.fillRect(0, 0, w, h);
-
-        // Draw crack network
-        function drawCrack(x0, y0, cx, cy, x1, y1, lw, alpha) {
-            // Raised-edge highlight (slightly lighter glow around crack)
-            ctx.beginPath();
-            ctx.moveTo(x0*w, y0*h);
-            ctx.quadraticCurveTo(cx*w, cy*h, x1*w, y1*h);
-            ctx.strokeStyle = `rgba(95, 65, 32, ${alpha * 0.55})`;
-            ctx.lineWidth   = lw + 2;
-            ctx.stroke();
-            // Dark crack depth
-            ctx.beginPath();
-            ctx.moveTo(x0*w, y0*h);
-            ctx.quadraticCurveTo(cx*w, cy*h, x1*w, y1*h);
-            ctx.strokeStyle = `rgba(8, 3, 1, ${alpha * 0.92})`;
-            ctx.lineWidth   = lw;
-            ctx.stroke();
+        let globalAlpha = 1;
+        if (elapsed > T.holdUntil) {
+            globalAlpha = 1 - Math.min((elapsed - T.holdUntil) / (T.fadeEnd - T.holdUntil), 1);
+        }
+        if (globalAlpha <= 0) {
+            canvas.remove();
+            document.body.style.overflow = '';
+            return;
         }
 
+        ctx.clearRect(0, 0, w, h);
+        ctx.globalAlpha = globalAlpha;
+
+        // Desert background
+        const dg = ctx.createLinearGradient(0, 0, w, h);
+        dg.addColorStop(0,   '#ddb46e');
+        dg.addColorStop(0.4, '#cc9050');
+        dg.addColorStop(0.8, '#b07240');
+        dg.addColorStop(1,   '#8c5a2e');
+        ctx.fillStyle = dg;
+        ctx.fillRect(0, 0, w, h);
+
+        // Crack lines
         ctx.save();
-        ctx.lineCap = 'round';
-        mainCracks.forEach(([x0,y0,cx,cy,x1,y1,lw]) => drawCrack(x0,y0,cx,cy,x1,y1,lw,1));
-        branchCracks.forEach(([x0,y0,cx,cy,x1,y1,lw]) => drawCrack(x0,y0,cx,cy,x1,y1,lw,0.85));
+        ctx.strokeStyle = 'rgba(80, 44, 12, 0.13)';
+        ctx.lineWidth = 1;
+        cracks.forEach(([x1, y1, cx, cy, x2, y2]) => {
+            ctx.beginPath();
+            ctx.moveTo(x1 * w, y1 * h);
+            ctx.quadraticCurveTo(cx * w, cy * h, x2 * w, y2 * h);
+            ctx.stroke();
+        });
         ctx.restore();
 
-        // ── 2. Jungle sweep ───────────────────────────────────────────────
+        // Green sweep
         const sweepRaw = Math.max(elapsed - T.sweepStart, 0) / (T.sweepEnd - T.sweepStart);
         const sweepP   = ease(Math.min(sweepRaw, 1));
-        const gx       = sweepP * w;                          // green edge x
-        const wAmp     = Math.min(gx * 0.018, 16);
+        const greenEdge = sweepP * w;
+        const waveAmp   = Math.min(greenEdge * 0.022, 18);
 
-        if (gx > 1) {
-            // Jungle fill
-            const jg = ctx.createLinearGradient(0, 0, 0, h);
-            jg.addColorStop(0,    '#0a1a0d');
-            jg.addColorStop(0.25, '#0f2212');
-            jg.addColorStop(0.65, '#152a18');
-            jg.addColorStop(1,    '#0c1a0e');
-            ctx.fillStyle = jg;
+        if (greenEdge > 0) {
+            // Green fill with organic right edge
+            const gg = ctx.createLinearGradient(0, 0, w, h);
+            gg.addColorStop(0,   '#1e3622');
+            gg.addColorStop(0.5, '#2b4d30');
+            gg.addColorStop(1,   '#3a6640');
+            ctx.fillStyle = gg;
 
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.lineTo(waveAt(0, gx, wAmp), 0);
-            for (let i = 1; i <= 160; i++) {
-                const yn = i / 160;
-                ctx.lineTo(waveAt(yn, gx, wAmp), yn * h);
+            ctx.lineTo(waveAt(0, greenEdge, waveAmp), 0);
+            for (let i = 0; i <= 120; i++) {
+                const yn = i / 120;
+                ctx.lineTo(waveAt(yn, greenEdge, waveAmp), yn * h);
             }
             ctx.lineTo(0, h);
             ctx.closePath();
             ctx.fill();
 
-            // Dappled canopy light (subtle green shimmer inside jungle)
-            const shimmer = ctx.createLinearGradient(0, 0, gx * 0.7, h);
-            shimmer.addColorStop(0,   'rgba(30, 80, 35, 0.10)');
-            shimmer.addColorStop(0.5, 'rgba(20, 60, 25, 0.04)');
-            shimmer.addColorStop(1,   'rgba(10, 40, 15, 0.0)');
-            ctx.fillStyle = shimmer;
-            ctx.fillRect(0, 0, gx, h);
+            // Subtle lighter sheen on left
+            const sheen = ctx.createLinearGradient(0, 0, greenEdge, 0);
+            sheen.addColorStop(0,   'rgba(255,255,255,0.04)');
+            sheen.addColorStop(0.6, 'rgba(255,255,255,0)');
+            ctx.fillStyle = sheen;
+            ctx.fillRect(0, 0, greenEdge, h);
 
-            // Background trees (clipped inside jungle)
-            ctx.save();
-            ctx.beginPath();
-            ctx.rect(0, 0, gx - wAmp - 15, h);
-            ctx.clip();
-            bgTrees.forEach(t => {
-                const tx    = t.xRatio * gx;
-                if (tx < 20 || tx > gx - 35) return;
-                const trkH  = t.trunkH * h;
-                const trkY  = h - trkH;
-                // Trunk
-                ctx.fillStyle = '#070f08';
-                ctx.fillRect(tx - t.trunkW/2, trkY, t.trunkW, trkH + 2);
-                // Canopy layers (bottom to top)
-                for (let l = 0; l <= t.layers; l++) {
-                    const cy = trkY - t.canopyR * 0.3 - l * t.canopyR * 0.58;
-                    const cr = t.canopyR * (1 - l * 0.16);
-                    ctx.beginPath();
-                    ctx.ellipse(tx, cy, cr, cr * 0.72, 0, 0, Math.PI*2);
-                    ctx.fillStyle = `hsl(${t.hue}, 40%, ${t.li + l * 4}%)`;
-                    ctx.fill();
-                }
-            });
-            ctx.restore();
-
-            // ── 3. Vegetation fringe (continuous canopy invading drought zone) ──
-
-            // Outer fringe path: follows the canopy profile into the drought zone
-            ctx.beginPath();
-            ctx.moveTo(waveAt(0, gx, wAmp), 0);
-            fringeProfile.forEach(([yn, xOff]) => {
-                ctx.lineTo(waveAt(yn, gx, wAmp) + xOff, yn * h);
-            });
-            // Return along the inner edge back to top
-            for (let i = 160; i >= 0; i--) {
-                const yn = i / 160;
-                ctx.lineTo(waveAt(yn, gx, wAmp) - 8, yn * h);
-            }
-            ctx.closePath();
-
-            // Gradient: darker at base (root/shadow), lighter at tips (sunlit canopy)
-            const fg = ctx.createLinearGradient(gx, 0, gx + 115, 0);
-            fg.addColorStop(0,   'hsl(127, 44%, 14%)');
-            fg.addColorStop(0.3, 'hsl(128, 46%, 19%)');
-            fg.addColorStop(0.7, 'hsl(129, 48%, 24%)');
-            fg.addColorStop(1,   'hsl(130, 50%, 28%)');
-            ctx.fillStyle = fg;
-            ctx.fill();
-
-            // Sunlit highlight on the right-facing canopy tips
-            const tipGlow = ctx.createLinearGradient(gx + 60, 0, gx + 115, 0);
-            tipGlow.addColorStop(0,   'rgba(120, 210, 130, 0.0)');
-            tipGlow.addColorStop(0.6, 'rgba(120, 210, 130, 0.07)');
-            tipGlow.addColorStop(1,   'rgba(160, 230, 150, 0.12)');
-            ctx.fillStyle = tipGlow;
-            ctx.fill();
-
-            // Grass blades
+            // Grass blades at leading edge (pointing right into desert)
             blades.forEach(b => {
-                const by = b.yr * h;
-                const bx = waveAt(b.yr, gx, wAmp);
+                const by = b.yRatio * h;
+                const bx = waveAt(b.yRatio, greenEdge, waveAmp);
                 ctx.beginPath();
                 ctx.moveTo(bx, by);
                 ctx.quadraticCurveTo(
-                    bx + b.len * 0.55, by + b.lean * 0.4 - b.th,
-                    bx + b.len,        by + b.lean
+                    bx + b.length * 0.55, by + b.lean * 0.4 - b.thickness,
+                    bx + b.length,        by + b.lean
                 );
                 ctx.quadraticCurveTo(
-                    bx + b.len * 0.55, by + b.lean * 0.4 + b.th,
-                    bx,                by + b.th * 0.5
+                    bx + b.length * 0.55, by + b.lean * 0.4 + b.thickness,
+                    bx,                   by + b.thickness * 0.5
                 );
-                ctx.fillStyle = `hsl(${b.hue}, 50%, ${b.li}%)`;
+                ctx.fillStyle = `hsl(${b.hue}, 48%, ${b.lightness}%)`;
                 ctx.fill();
             });
         }
 
-        // ── 4. Name reveal ────────────────────────────────────────────────
+        // Name reveal
         const nameRaw = Math.max(elapsed - T.nameStart, 0) / (T.nameEnd - T.nameStart);
         const nameP   = ease(Math.min(nameRaw, 1));
 
         if (nameP > 0) {
-            ctx.globalAlpha = ga * nameP;
+            ctx.globalAlpha = globalAlpha * nameP;
 
-            const fs  = Math.min(w * 0.088, 90);
-            const cx  = w / 2;
-            const cy  = h / 2 + (1 - nameP) * 20;
+            const fontSize = Math.min(w * 0.088, 90);
+            const cx = w / 2;
+            const cy = h / 2 + (1 - nameP) * 18;
 
             ctx.textAlign    = 'center';
             ctx.textBaseline = 'middle';
 
             // Name
-            ctx.shadowColor = 'rgba(0,0,0,0.55)';
-            ctx.shadowBlur  = 32;
+            ctx.shadowColor = 'rgba(0,0,0,0.45)';
+            ctx.shadowBlur  = 28;
             ctx.fillStyle   = '#ffffff';
-            ctx.font        = `bold ${fs}px Georgia, "Playfair Display", serif`;
-            ctx.fillText('Kaku Jain', cx, cy - fs * 0.08);
+            ctx.font        = `bold ${fontSize}px Georgia, "Playfair Display", serif`;
+            ctx.fillText('Kaku Jain', cx, cy - fontSize * 0.05);
 
             // Tagline
             ctx.shadowBlur  = 0;
-            ctx.fillStyle   = '#9de0b8';
-            ctx.font        = `${Math.min(w * 0.020, 18)}px Arial, sans-serif`;
-            ctx.fillText('BRINGING LIFE TO EVERY DIGITAL EXPERIENCE', cx, cy + fs * 0.74);
+            ctx.fillStyle   = '#b4e4c6';
+            ctx.font        = `${Math.min(w * 0.021, 19)}px Arial, sans-serif`;
+            ctx.fillText('B R I N G I N G  G R E E N E R Y  B A C K', cx, cy + fontSize * 0.75);
 
-            ctx.globalAlpha = ga;
-            ctx.textAlign   = 'start';
-            ctx.shadowBlur  = 0;
+            ctx.globalAlpha  = globalAlpha;
+            ctx.textAlign    = 'start';
+            ctx.shadowBlur   = 0;
         }
 
         requestAnimationFrame(frame);
