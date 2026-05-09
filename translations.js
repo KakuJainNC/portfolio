@@ -6,7 +6,6 @@ const translations = {
         'nav.home': 'Home',
         'nav.about': 'About',
         'nav.portfolio': 'Portfolio',
-        'nav.testimonials': 'Testimonials',
         'nav.contact': 'Contact',
         
         // Hero Section
@@ -94,26 +93,6 @@ const translations = {
         'portfolio.restaurant.tag1': 'Hospitality',
         'portfolio.restaurant.tag2': 'Operations',
         
-        // Testimonials Section
-        'testimonials.tag': 'Client Feedback',
-        'testimonials.title': 'What Clients Say',
-        
-        'testimonial1.text': "Kaku's design expertise transformed our app completely. His attention to detail and understanding of user experience is exceptional. The project was delivered on time and exceeded all our expectations.",
-        'testimonial1.name': 'Sarah Martinez',
-        'testimonial1.position': 'CEO, TechVision Inc.',
-        
-        'testimonial2.text': 'Working with Kaku was a game-changer for our brand. His creative vision and technical skills brought our ideas to life in ways we couldn\'t imagine. Highly recommend!',
-        'testimonial2.name': 'Michael Chen',
-        'testimonial2.position': 'Founder, GreenLeaf Studios',
-        
-        'testimonial3.text': 'As a Glide Certified Expert, Kaku not only delivered outstanding designs but also educated our team on best practices. His professionalism and expertise are unmatched.',
-        'testimonial3.name': 'Emily Rodriguez',
-        'testimonial3.position': 'Marketing Director, Innovate Digital',
-        
-        'testimonial4.text': "Kaku's ability to understand our business needs and translate them into beautiful, functional designs is remarkable. He's become our go-to designer for all projects.",
-        'testimonial4.name': 'David Thompson',
-        'testimonial4.position': 'Product Manager, CloudSync',
-        
         // Contact Section
         'contact.tag': "Let's Connect",
         'contact.title': 'Get In Touch',
@@ -158,7 +137,6 @@ const translations = {
         'nav.home': 'Inicio',
         'nav.about': 'Acerca de',
         'nav.portfolio': 'Portafolio',
-        'nav.testimonials': 'Testimonios',
         'nav.contact': 'Contacto',
         
         // Hero Section
@@ -245,26 +223,6 @@ const translations = {
         'portfolio.restaurant.desc': 'Gestión integral de restaurante y solución POS',
         'portfolio.restaurant.tag1': 'Hospitalidad',
         'portfolio.restaurant.tag2': 'Operaciones',
-        
-        // Testimonials Section
-        'testimonials.tag': 'Opiniones de Clientes',
-        'testimonials.title': 'Lo Que Dicen los Clientes',
-        
-        'testimonial1.text': 'La experiencia en diseño de Kaku transformó completamente nuestra aplicación. Su atención al detalle y comprensión de la experiencia del usuario es excepcional. El proyecto se entregó a tiempo y superó todas nuestras expectativas.',
-        'testimonial1.name': 'Sarah Martínez',
-        'testimonial1.position': 'CEO, TechVision Inc.',
-        
-        'testimonial2.text': 'Trabajar con Kaku fue un cambio radical para nuestra marca. Su visión creativa y habilidades técnicas dieron vida a nuestras ideas de maneras que no podíamos imaginar. ¡Altamente recomendado!',
-        'testimonial2.name': 'Michael Chen',
-        'testimonial2.position': 'Fundador, GreenLeaf Studios',
-        
-        'testimonial3.text': 'Como Experto Certificado de Glide, Kaku no solo entregó diseños sobresalientes sino que también educó a nuestro equipo sobre las mejores prácticas. Su profesionalismo y experiencia son incomparables.',
-        'testimonial3.name': 'Emily Rodríguez',
-        'testimonial3.position': 'Directora de Marketing, Innovate Digital',
-        
-        'testimonial4.text': 'La capacidad de Kaku para comprender nuestras necesidades comerciales y traducirlas en diseños hermosos y funcionales es notable. Se ha convertido en nuestro diseñador de confianza para todos los proyectos.',
-        'testimonial4.name': 'David Thompson',
-        'testimonial4.position': 'Gerente de Producto, CloudSync',
         
         // Contact Section
         'contact.tag': 'Conectemos',
