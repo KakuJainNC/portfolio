@@ -761,6 +761,20 @@ section {
     width: 100%;
     aspect-ratio: 4 / 3;
     overflow: hidden;
+    position: relative;
+}
+
+.portfolio-list-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(53, 94, 59, 0.45) 0%, rgba(53, 94, 59, 0.25) 100%);
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.portfolio-item:hover .portfolio-list-img::after {
+    opacity: 0;
 }
 
 .portfolio-list-img img {
@@ -769,10 +783,12 @@ section {
     object-fit: cover;
     transition: transform 0.5s ease;
     display: block;
+    filter: brightness(0.85);
 }
 
 .portfolio-item:hover .portfolio-list-img img {
     transform: scale(1.05);
+    filter: brightness(1);
 }
 
 .portfolio-list-text {
