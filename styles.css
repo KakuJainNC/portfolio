@@ -721,6 +721,42 @@ section {
     background: var(--off-white);
 }
 
+.portfolio-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+
+.portfolio-intro-text {
+    text-align: left;
+}
+
+.portfolio-intro-text .section-title {
+    margin-bottom: 1rem;
+}
+
+.portfolio-intro-image {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.portfolio-intro-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .portfolio-intro {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
 .portfolio-filters {
     display: flex;
     justify-content: center;
