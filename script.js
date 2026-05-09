@@ -101,7 +101,7 @@ function initMatrixRain() {
     ].join(';');
     introDiv.innerHTML =
         '<div style="text-align:center;padding:0 1rem">' +
-        '<div style="font-family:\'Satoshi\',sans-serif;' +
+        '<div style="font-family:\'JetBrains Mono\',monospace;' +
             'font-size:clamp(2.5rem,8vw,90px);font-weight:700;color:#ffffff;' +
             'text-shadow:0 0 40px rgba(53,94,59,0.9),0 4px 24px rgba(0,0,0,0.7);">' +
             'Kaku Jain' +
