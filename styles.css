@@ -1139,8 +1139,16 @@ section {
     line-height: 1.8;
 }
 
+.footer-companies {
+    font-size: 0.9rem;
+    color: var(--text-lighter);
+    letter-spacing: 0.02em;
+    margin-top: 0.25rem;
+}
+
 .footer-tagline {
-    margin-top: 1rem;
+    margin-top: 0.75rem;
+    font-style: italic;
 }
 
 .footer-links h4,
