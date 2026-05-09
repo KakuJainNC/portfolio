@@ -188,11 +188,8 @@ function runIntroAnimation() {
     requestAnimationFrame(frame);
 }
 
-// Run once per browser session
-if (!sessionStorage.getItem('introPlayed')) {
-    sessionStorage.setItem('introPlayed', '1');
-    runIntroAnimation();
-}
+// Run on every page load
+runIntroAnimation();
 
 // ====================
 // Language Switcher
