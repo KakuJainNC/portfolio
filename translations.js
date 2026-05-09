@@ -10,8 +10,8 @@ const translations = {
         'nav.contact': 'Contact',
         
         // Hero Section
-        'hero.badge': 'Glide Certified Expert',
-        'hero.title1': 'Crafting Digital',
+        'hero.badge': 'UI/UX Expert',
+        'hero.title1': 'Crafting AI-Powered Digital',
         'hero.title2': 'Experiences',
         'hero.title3': 'That Inspire',
         'hero.description': 'Hi, I am Kaku Jain, a passionate design professional with a decade of experience specializing in web and app design. I work for Duplica and am based in Gujarat, India, with most of my projects spanning the USA and Mexico.',
@@ -166,8 +166,8 @@ const translations = {
         'nav.contact': 'Contacto',
         
         // Hero Section
-        'hero.badge': 'Experto Certificado de Glide',
-        'hero.title1': 'Creando Experiencias',
+        'hero.badge': 'Experto UI/UX',
+        'hero.title1': 'Creando Experiencias Digitales Potenciadas por IA',
         'hero.title2': 'Digitales',
         'hero.title3': 'Que Inspiran',
         'hero.description': 'Hola, soy Kaku Jain, un profesional del diseño apasionado con una década de experiencia especializada en diseño web y de aplicaciones. Trabajo para Duplica y tengo mi base en Gujarat, India, con la mayoría de mis proyectos en Estados Unidos y México.',

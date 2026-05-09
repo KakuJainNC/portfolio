@@ -112,7 +112,6 @@ ul {
     border-radius: 50%;
     object-fit: cover;
     object-position: top;
-    border: 2px solid var(--primary-green);
     flex-shrink: 0;
 }
 
@@ -225,6 +224,20 @@ ul {
     align-items: center;
     position: relative;
     z-index: 1;
+}
+
+.blink-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6fffaa;
+    flex-shrink: 0;
+    animation: blink-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes blink-pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px #6fffaa; }
+    50%       { opacity: 0.25; box-shadow: none; }
 }
 
 .hero-badge {
@@ -1270,12 +1283,12 @@ section {
         /* margin-right: auto; */
     }
 
-    .lang-btn .lang-text {
+    .lang-btn:not(.active) {
         display: none;
     }
 
     .lang-btn {
-        padding: 0.5rem;
+        padding: 0.4rem 0.85rem;
     }
 
     .hamburger {

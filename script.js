@@ -286,12 +286,20 @@ function initLanguageSwitcher() {
     
     if (langEnBtn && langEsBtn) {
         langEnBtn.addEventListener('click', () => {
-            console.log('Switching to English...');
-            translatePage('en');
+            // On mobile only the active button shows, so clicking EN toggles to ES
+            if (window.innerWidth <= 768 && currentLanguage === 'en') {
+                translatePage('es');
+            } else {
+                translatePage('en');
+            }
         });
         langEsBtn.addEventListener('click', () => {
-            console.log('Switching to Spanish...');
-            translatePage('es');
+            // On mobile only the active button shows, so clicking ES toggles to EN
+            if (window.innerWidth <= 768 && currentLanguage === 'es') {
+                translatePage('en');
+            } else {
+                translatePage('es');
+            }
         });
         
         // Set initial language
