@@ -95,6 +95,12 @@ const translations = {
         'portfolio.restaurant.desc': 'End-to-end restaurant management and POS solution',
         'portfolio.restaurant.tag1': 'Hospitality',
         'portfolio.restaurant.tag2': 'Operations',
+
+        'portfolio.logistics.title': 'Logistics Operations System',
+        'portfolio.logistics.desc': 'End-to-end logistics management covering fleet tracking, shipment scheduling, and supply chain coordination for freight companies',
+        'portfolio.logistics.tag1': 'Logistics',
+        'portfolio.logistics.tag2': 'Supply Chain',
+        'portfolio.logistics.tag3': 'Fleet Management',
         
         // Contact Section
         'contact.tag': "Let's Connect",
@@ -230,6 +236,12 @@ const translations = {
         'portfolio.restaurant.desc': 'Gestión integral de restaurante y solución POS',
         'portfolio.restaurant.tag1': 'Hospitalidad',
         'portfolio.restaurant.tag2': 'Operaciones',
+
+        'portfolio.logistics.title': 'Sistema de Operaciones Logísticas',
+        'portfolio.logistics.desc': 'Gestión logística integral con seguimiento de flota, programación de envíos y coordinación de la cadena de suministro para empresas de carga',
+        'portfolio.logistics.tag1': 'Logística',
+        'portfolio.logistics.tag2': 'Cadena de Suministro',
+        'portfolio.logistics.tag3': 'Gestión de Flota',
         
         // Contact Section
         'contact.tag': 'Conectemos',

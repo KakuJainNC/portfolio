@@ -763,11 +763,6 @@ section {
     gap: 1.75rem;
 }
 
-.portfolio-list .portfolio-item:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-    max-width: 60%;
-    margin: 0 auto;
-}
 
 .portfolio-item {
     display: flex;
@@ -1190,10 +1185,12 @@ section {
 
 .footer-bottom {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
+    gap: 1rem;
     padding-top: 2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
 }
 
 .footer-bottom p {
