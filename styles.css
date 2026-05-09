@@ -1156,6 +1156,17 @@ section {
     text-align: left;
 }
 
+.email-divider {
+    margin: 0 0.5rem;
+    color: var(--text-lighter);
+}
+
+.email-region {
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--text-lighter);
+}
+
 .footer-links h4,
 .footer-contact {
     position: relative;
