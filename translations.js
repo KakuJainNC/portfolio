@@ -1,6 +1,9 @@
 // Translation data for English and Spanish
 const translations = {
     en: {
+        // Page title
+        'page.title': 'Kaku Jain | UX-Led Builder',
+
         // Navigation
         'header.name': 'Kaku Jain',
         'nav.home': 'Home',
@@ -132,6 +135,9 @@ const translations = {
     },
     
     es: {
+        // Page title
+        'page.title': 'Kaku Jain | Constructor UX',
+
         // Navigation
         'header.name': 'Kaku Jain',
         'nav.home': 'Inicio',

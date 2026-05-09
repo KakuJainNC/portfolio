@@ -275,7 +275,11 @@ function translatePage(lang) {
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === lang);
     });
-    
+
+    // Update browser tab title
+    const titleTranslation = translations[lang]['page.title'];
+    if (titleTranslation) document.title = titleTranslation;
+
     console.log(`Translation complete: ${translatedCount} elements translated to ${lang}`);
 }
 
