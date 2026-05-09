@@ -101,6 +101,19 @@ ul {
     font-weight: 800;
     color: var(--primary-green);
     font-family: 'Playfair Display', serif;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    border: 2px solid var(--primary-green);
+    flex-shrink: 0;
 }
 
 .nav-menu {

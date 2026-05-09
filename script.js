@@ -3,6 +3,10 @@
 // ====================
 
 function initMatrixRain() {
+    // Remove the CSS flash-preventer injected in <head> so canvas/veil aren't caught by it
+    const fp = document.getElementById('flash-preventer');
+    if (fp) fp.remove();
+
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const CHARS = '0123456789/|\\<>{}[];:.,!?=+-*#@$%^&~';

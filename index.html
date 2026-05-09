@@ -48,6 +48,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <!-- Hide all body content before JS runs to prevent flash of unstyled content -->
+    <style id="flash-preventer">body>*{opacity:0!important}</style>
 
     <title>Kaku Jain | Design Portfolio</title>
     <link rel="stylesheet" href="styles.css">
@@ -61,6 +63,7 @@
     <nav class="navbar" id="navbar">
         <div class="container nav-container">
             <a href="#home" class="logo">
+                <img src="kaku-jain.png" class="logo-avatar" alt="Kaku Jain">
                 <span class="logo-text" data-translate="header.name">Kaku Jain</span>
             </a>
             <ul class="nav-menu" id="nav-menu">
@@ -72,11 +75,9 @@
             </ul>
             <div class="language-switcher">
                 <button class="lang-btn active" data-lang="en" id="langEn">
-                    <span class="flag">🇬🇧</span>
                     <span class="lang-text">EN</span>
                 </button>
                 <button class="lang-btn" data-lang="es" id="langEs">
-                    <span class="flag">🇪🇸</span>
                     <span class="lang-text">ES</span>
                 </button>
             </div>
