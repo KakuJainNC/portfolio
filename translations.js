@@ -154,7 +154,7 @@ const translations = {
         'nav.contact': 'Contacto',
         
         // Hero Section
-        'hero.badge': 'Diseñador y Constructor UX',
+        'hero.badge': 'Constructor Guiado por UX',
         'hero.title1': 'Una década diseñando y construyendo productos digitales.',
         'hero.title2': 'Ahora con IA.',
         'hero.title3': '',
@@ -176,7 +176,7 @@ const translations = {
         // About Section
         'about.tag': 'Conóceme',
         'about.title': 'Acerca de Mí',
-        'about.subtitle': 'Diseñador, Constructor, Estratega UX',
+        'about.subtitle': 'Constructor Guiado por UX',
         'about.p1': 'Una década de trabajo de diseño para clientes en EE.UU., México e India — investigación UX, diseño de interfaces y entrega de productos reales de extremo a extremo. Trabajo para Duplica como parte de un equipo multilingüe que sirve mercados internacionales.',
         'about.p2': 'Hoy, hago más que diseñar — construyo. Los flujos de trabajo aumentados con IA me permiten entregar sitios de marca, aplicaciones web, landing pages y productos de software completos sin la tradicional transferencia entre diseño e ingeniería. UX primero, construcción inmediata, todo desde el mismo escritorio en Gujarat, India.',
         'about.basedin.title': 'Ubicado en',
@@ -275,7 +275,7 @@ const translations = {
         'footer.links.title': 'Enlaces Rápidos',
         'footer.contact.title': 'Contáctame',
         'footer.copyright': '© 2026 Kaku Jain. Todos los derechos reservados.',
-        'footer.badge': 'UX-Led Builder',
+        'footer.badge': 'Constructor Guiado por UX',
         
         // Skills
         'skill.uxstrategy': 'Estrategia UX',
