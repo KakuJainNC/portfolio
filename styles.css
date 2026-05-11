@@ -207,13 +207,13 @@ ul {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #6fffaa;
+    background: var(--primary-green);
     flex-shrink: 0;
     animation: blink-pulse 1.4s ease-in-out infinite;
 }
 
 @keyframes blink-pulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 6px #6fffaa; }
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--light-green); }
     50%       { opacity: 0.25; box-shadow: none; }
 }
 
