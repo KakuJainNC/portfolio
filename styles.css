@@ -221,8 +221,9 @@ ul {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: var(--gradient);
-    color: var(--white);
+    background: #f7faf8;
+    color: var(--primary-green);
+    border: 1.5px solid var(--primary-green);
     padding: 0.5rem 1.5rem;
     border-radius: 50px;
     font-size: 0.9rem;
